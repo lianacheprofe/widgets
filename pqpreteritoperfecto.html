@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las pequeñas cosas — Gramática: Pretérito Perfecto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #191919;
+            --bg-brown: #3d3522;
+            --border-brown: #54492f;
+            --bg-green: #1e2e24;
+            --bg-green-hover: #24382c;
+            --border-green: #2c4235;
+            --text-main: #e6e6e4;
+            --text-muted: #9b9b97;
+            --accent-gold: #d4a853;
+            --success: #4ade80;
+            --success-bg: rgba(74, 222, 128, 0.14);
+            --warning: #fbbf24;
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.14);
+            --font-notion: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-notion);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.65;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Верхняя плашка в стиле коричневого callout из Notion */
+        .header-callout {
+            background-color: var(--bg-brown);
+            border: 1px solid var(--border-brown);
+            border-radius: 8px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-pill {
+            background-color: rgba(0, 0, 0, 0.35);
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 0.88em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-brown);
+        }
+
+        /* Панель навигации и быстрой вставки спецсимволов */
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .tabs-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: #242424;
+            color: var(--text-muted);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 9px 14px;
+            font-family: inherit;
+            font-size: 0.88em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            background-color: #2d2d2d;
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-green);
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        .char-helper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #242424;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            font-size: 0.82em;
+            color: var(--text-muted);
+        }
+
+        .char-btn {
+            background-color: var(--bg-brown);
+            color: var(--accent-gold);
+            border: 1px solid var(--border-brown);
+            border-radius: 4px;
+            padding: 3px 9px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .char-btn:hover {
+            background-color: var(--accent-gold);
+            color: var(--bg-main);
+        }
+
+        /* Описание упражнения */
+        .section-intro {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid #2e2e2e;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            font-size: 0.93em;
+            color: #cccccc;
+        }
+
+        .section-intro strong {
+            color: var(--accent-gold);
+        }
+
+        /* Заголовок подблока */
+        .sub-header {
+            background-color: var(--bg-brown);
+            border-left: 4px solid var(--accent-gold);
+            padding: 9px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-top: 22px;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+
+        /* Карточка предложения в темно-зеленом стиле Notion */
+        .sentence-card {
+            background-color: var(--bg-green);
+            border: 1px solid var(--border-green);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .sentence-card:hover {
+            background-color: var(--bg-green-hover);
+        }
+
+        .sentence-line {
+            font-size: 0.96em;
+            line-height: 2.1;
+        }
+
+        .q-num {
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        .verb-hint {
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 0.9em;
+            margin: 0 3px;
+        }
+
+        input.gap-input {
+            background-color: rgba(0, 0, 0, 0.35);
+            color: var(--text-main);
+            border: 1px solid #3c5446;
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-family: inherit;
+            font-size: 0.94em;
+            font-weight: 600;
+            width: 155px;
+            text-align: center;
+            outline: none;
+            transition: 0.2s;
+            margin: 0 3px;
+        }
+
+        input.gap-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 2px rgba(212, 168, 83, 0.2);
+        }
+
+        input.gap-input.is-correct {
+            border-color: var(--success);
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        input.gap-input.is-wrong {
+            border-color: var(--error);
+            background-color: var(--error-bg);
+            color: var(--error);
+        }
+
+        .feedback-mark {
+            font-weight: 700;
+            font-size: 0.95em;
+            margin-right: 4px;
+        }
+
+        .feedback-mark.ok { color: var(--success); }
+        .feedback-mark.err { color: var(--error); }
+        .feedback-mark.warn { color: var(--warning); }
+
+        .item-note {
+            display: none;
+            margin-top: 8px;
+            padding: 7px 12px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.26);
+            border-left: 3px solid var(--accent-gold);
+            font-size: 0.85em;
+            color: #d4d4d0;
+        }
+
+        .item-note.show {
+            display: block;
+        }
+
+        .item-note strong {
+            color: var(--accent-gold);
+        }
+
+        /* Нижняя панель кнопок */
+        .footer-bar {
+            margin-top: 24px;
+            padding: 16px 20px;
+            background-color: var(--bg-brown);
+            border: 1px solid var(--border-brown);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background-color: var(--bg-green);
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            border-radius: 6px;
+            padding: 9px 18px;
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--accent-gold);
+            color: var(--bg-main);
+        }
+
+        .action-btn.secondary {
+            background-color: rgba(0, 0, 0, 0.35);
+            color: var(--text-main);
+            border-color: var(--border-brown);
+        }
+
+        .action-btn.secondary:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .score-summary {
+            font-weight: 600;
+            color: var(--accent-gold);
+            font-size: 0.96em;
+        }
+
+        @media (max-width: 640px) {
+            input.gap-input {
+                width: 135px;
+            }
+            .footer-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Шапка -->
+    <div class="header-callout">
+        <div class="header-title">
+            <span>🕵️‍♂️</span>
+            <span>¡Caza el Pretérito Perfecto! — Las pequeñas cosas</span>
+        </div>
+        <div class="progress-pill" id="progress-pill">Completados: 0 / 31</div>
+    </div>
+
+    <!-- Вкладки и кнопки быстрой вставки спецсимволов -->
+    <div class="top-controls">
+        <div class="tabs-bar">
+            <button class="tab-btn active" id="tab-1" onclick="switchTab(1)">
+                🎬 Ejercicio 1: En el guion (14)
+            </button>
+            <button class="tab-btn" id="tab-2" onclick="switchTab(2)">
+                📝 Ejercicio 2: Resumen (6)
+            </button>
+            <button class="tab-btn" id="tab-all" onclick="switchTab('all')">
+                📋 Ver todo
+            </button>
+        </div>
+
+        <div class="char-helper">
+            <span>Insertar tilde:</span>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'í')">í</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'á')">á</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'é')">é</button>
+        </div>
+    </div>
+
+    <!-- EJERCICIO 1 -->
+    <div id="section-1">
+        <div class="section-intro">
+            <strong>Ejercicio 1:</strong> Completa las frases exactas del cortometraje poniendo los verbos entre paréntesis en <strong>Pretérito Perfecto</strong> (fíjate bien en la persona y en los participios irregulares).
+        </div>
+
+        <div class="sub-header">🎬 En el rodaje (Parte 1)</div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">1.</span> — Esta vez <span class="verb-hint">(FALTAR, ello)</span>
+                <input type="text" class="gap-input" id="g1" data-ans="ha faltado"><span class="feedback-mark"></span>
+                poco. ¿<span class="verb-hint">(AVERIGUAR, tú)</span>
+                <input type="text" class="gap-input" id="g2" data-ans="has averiguado"><span class="feedback-mark"></span>
+                algo?
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> ha faltado / has averiguado</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">2.</span> — Ya se lo <span class="verb-hint">(DECIR, yo)</span>
+                <input type="text" class="gap-input" id="g3" data-ans="he dicho"><span class="feedback-mark"></span>: no voy a reescribir ni una sola palabra del guion.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> he dicho <em>(participio irregular: decir &rarr; dicho)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">3.</span> — Si esa frase es la clave de la película. Siempre <span class="verb-hint">(ESTAR, ella)</span>
+                <input type="text" class="gap-input" id="g4" data-ans="ha estado"><span class="feedback-mark"></span>
+                ahí.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> ha estado</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">4.</span> — A ver, Jean-Pierre, ya <span class="verb-hint">(DESPEDIR, tú)</span>
+                <input type="text" class="gap-input" id="g5" data-ans="has despedido"><span class="feedback-mark"></span>
+                a seis. Como sigas así... ¡te vas a quedar solo!
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> has despedido</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">5.</span> — ¡Ya me <span class="verb-hint">(OÍR, usted)</span>
+                <input type="text" class="gap-input" id="g6" data-ans="ha oído"><span class="feedback-mark"></span>! Se quedará usted cuatro días esperando.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> ha oído <em>(lleva tilde en la «í»: o-í-do)</em></div>
+        </div>
+
+        <div class="sub-header">🏝️ Con Laia en la isla (Partes 2, 3 y 4)</div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">6.</span> — Ya me <span class="verb-hint">(DECIR, ellos)</span>
+                <input type="text" class="gap-input" id="g7" data-ans="han dicho"><span class="feedback-mark"></span>
+                que no le gustan los halagos.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> han dicho <em>(participio irregular: decir &rarr; dicho)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">7.</span> — Bueno, antes (este restaurante) estaba bien, pero ahora se <span class="verb-hint">(QUEDAR, él)</span>
+                <input type="text" class="gap-input" id="g8" data-ans="ha quedado|se ha quedado"><span class="feedback-mark"></span>
+                un poco anticuado.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> (se) ha quedado</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">8.</span> — Como me pidió, <span class="verb-hint">(PREPARAR, yo)</span>
+                <input type="text" class="gap-input" id="g9" data-ans="he preparado"><span class="feedback-mark"></span>
+                un día de buceo, y luego a comer.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> he preparado</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">9.</span> — ¿Y el guion?, ¿<span class="verb-hint">(TENER, usted)</span>
+                <input type="text" class="gap-input" id="g10" data-ans="ha tenido"><span class="feedback-mark"></span>
+                tiempo de leerlo? — ¡Qué bien! ¿Qué le <span class="verb-hint">(PARECER, ello)</span>
+                <input type="text" class="gap-input" id="g11" data-ans="ha parecido"><span class="feedback-mark"></span>?
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> ha tenido / ha parecido</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">10.</span> — Sí <span class="verb-hint">(TENER, yo)</span>
+                <input type="text" class="gap-input" id="g12" data-ans="he tenido"><span class="feedback-mark"></span>
+                tiempo de leerlo, pero no lo <span class="verb-hint">(LEER, yo)</span>
+                <input type="text" class="gap-input" id="g13" data-ans="he leído"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> he tenido / he leído <em>(lleva tilde en la «í»: le-í-do)</em></div>
+        </div>
+
+        <div class="sub-header">🥂 En la boda y al final (Partes 5 y 6)</div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">11.</span> — ¿Y el desayuno? — A mí nadie me <span class="verb-hint">(DECIR, él)</span>
+                <input type="text" class="gap-input" id="g14" data-ans="ha dicho"><span class="feedback-mark"></span>
+                nada de un desayuno.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> ha dicho <em>(participio irregular: decir &rarr; dicho)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">12.</span> — (El novio de Laia): Nos <span class="verb-hint">(DECIR, ella)</span>
+                <input type="text" class="gap-input" id="g15" data-ans="ha dicho"><span class="feedback-mark"></span>
+                que es exactamente como esperaba, tan gran actor como persona.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> ha dicho <em>(participio irregular: decir &rarr; dicho)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">13.</span> — Gracias por estos días, me <span class="verb-hint">(HACER, ellos)</span>
+                <input type="text" class="gap-input" id="g16" data-ans="han hecho"><span class="feedback-mark"></span>
+                recordar que lo mejor de la vida está en saber disfrutar de las pequeñas cosas.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> han hecho <em>(participio irregular: hacer &rarr; hecho; el sujeto es «estos días»)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">14.</span> — Muy bien, señor Bertrand. <span class="verb-hint">(ESTAR, usted)</span>
+                <input type="text" class="gap-input" id="g17" data-ans="ha estado"><span class="feedback-mark"></span>
+                usted maravilloso.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> Ha estado</div>
+        </div>
+    </div>
+
+    <!-- EJERCICIO 2 -->
+    <div id="section-2" style="display: none;">
+        <div class="section-intro">
+            <strong>Ejercicio 2 (Resumen de la historia):</strong> Transforma los infinitivos en <strong>Pretérito Perfecto</strong> para contar qué ha pasado en estos cuatro días (fíjate bien si el sujeto es singular <em>él/ella ha</em> o plural <em>ellos han</em>).
+        </div>
+
+        <div class="sub-header">📋 ¿Qué ha pasado en estos cuatro días?</div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span>🛥️</span> El director <span class="verb-hint">(PARAR)</span>
+                <input type="text" class="gap-input" id="g18" data-ans="ha parado"><span class="feedback-mark"></span>
+                el rodaje porque la maqueta del barco se <span class="verb-hint">(ROMPER)</span>
+                <input type="text" class="gap-input" id="g19" data-ans="ha roto|se ha roto"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> ha parado / (se) ha roto <em>(irregular: romper &rarr; roto)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span>🥐</span> Laia <span class="verb-hint">(TRAER)</span>
+                <input type="text" class="gap-input" id="g20" data-ans="ha traído"><span class="feedback-mark"></span>
+                cruasanes, pero a Jean-Pierre no le <span class="verb-hint">(GUSTAR)</span>
+                <input type="text" class="gap-input" id="g21" data-ans="han gustado"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> ha traído <em>(con tilde en la «í»)</em> / han gustado <em>(plural: los cruasanes)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span>🤿</span> Jean-Pierre y Laia <span class="verb-hint">(HACER)</span>
+                <input type="text" class="gap-input" id="g22" data-ans="han hecho"><span class="feedback-mark"></span>
+                buceo y <span class="verb-hint">(COCINAR)</span>
+                <input type="text" class="gap-input" id="g23" data-ans="han cocinado"><span class="feedback-mark"></span>
+                un suquet con amigos.
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> han hecho <em>(irregular)</em> / han cocinado</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span>📝</span> Al principio, Jean-Pierre no <span class="verb-hint">(LEER)</span>
+                <input type="text" class="gap-input" id="g24" data-ans="ha leído"><span class="feedback-mark"></span>
+                el guion de Laia y <span class="verb-hint">(DECIR)</span>
+                <input type="text" class="gap-input" id="g25" data-ans="ha dicho"><span class="feedback-mark"></span>
+                que es «pequeño».
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> ha leído <em>(con tilde en la «í»)</em> / ha dicho <em>(irregular)</em></div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span>🥂</span> El sábado, Jean-Pierre <span class="verb-hint">(IR)</span>
+                <input type="text" class="gap-input" id="g26" data-ans="ha ido"><span class="feedback-mark"></span>
+                a la boda, <span class="verb-hint">(HABLAR)</span>
+                <input type="text" class="gap-input" id="g27" data-ans="ha hablado"><span class="feedback-mark"></span>
+                con el novio de Laia y <span class="verb-hint">(PEDIR)</span>
+                <input type="text" class="gap-input" id="g28" data-ans="ha pedido"><span class="feedback-mark"></span>
+                perdón.
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> ha ido / ha hablado / ha pedido</div>
+        </div>
+
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span>🎬</span> Al final, <span class="verb-hint">(ESCRIBIR)</span>
+                <input type="text" class="gap-input" id="g29" data-ans="ha escrito"><span class="feedback-mark"></span>
+                una nota en el guion de Laia y <span class="verb-hint">(PODER)</span>
+                <input type="text" class="gap-input" id="g30" data-ans="ha podido"><span class="feedback-mark"></span>
+                decir su frase en la película.
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> ha escrito <em>(irregular: escribir &rarr; escrito)</em> / ha podido</div>
+        </div>
+    </div>
+
+    <!-- Нижняя панель -->
+    <div class="footer-bar">
+        <div class="btn-group">
+            <button class="action-btn" onclick="checkVisible()">✓ Comprobar respuestas</button>
+            <button class="action-btn secondary" onclick="toggleNotes()">🔑 Mostrar / Ocultar claves</button>
+            <button class="action-btn secondary" onclick="resetAll()">↺ Reiniciar</button>
+        </div>
+        <div class="score-summary" id="score-summary">Aciertos: 0 / 30</div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = "las_pequenas_cosas_gramatica_v1";
+    let activeInput = null;
+    let currentTab = 1;
+    let notesVisible = false;
+
+    document.querySelectorAll('.gap-input').forEach(inp => {
+        inp.addEventListener('focus', () => {
+            activeInput = inp;
+        });
+        inp.addEventListener('input', () => {
+            saveProgress();
+            updateProgressCounter();
+        });
+        inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                checkSingleInput(inp);
+                updateScoreCounter();
+            }
+        });
+    });
+
+    function insertChar(e, char) {
+        e.preventDefault();
+        if (!activeInput) return;
+        const start = activeInput.selectionStart;
+        const end = activeInput.selectionEnd;
+        const val = activeInput.value;
+        activeInput.value = val.substring(0, start) + char + val.substring(end);
+        activeInput.selectionStart = activeInput.selectionEnd = start + char.length;
+        activeInput.focus();
+        saveProgress();
+        updateProgressCounter();
+    }
+
+    function normalizeExact(str) {
+        return (str || "").toLowerCase().trim().replace(/\s+/g, " ");
+    }
+
+    function removeAccents(str) {
+        return normalizeExact(str).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+
+        const s1 = document.getElementById('section-1');
+        const s2 = document.getElementById('section-2');
+
+        if (tab === 1) {
+            s1.style.display = 'block';
+            s2.style.display = 'none';
+        } else if (tab === 2) {
+            s1.style.display = 'none';
+            s2.style.display = 'block';
+        } else {
+            s1.style.display = 'block';
+            s2.style.display = 'block';
+        }
+    }
+
+    function checkSingleInput(input) {
+        const rawAns = input.getAttribute('data-ans') || "";
+        const validExact = rawAns.split('|').map(normalizeExact);
+        const validNoTilde = rawAns.split('|').map(removeAccents);
+
+        const userExact = normalizeExact(input.value);
+        const userNoTilde = removeAccents(input.value);
+        const mark = input.nextElementSibling;
+        const card = input.closest('.sentence-card');
+
+        input.classList.remove('is-correct', 'is-wrong');
+
+        if (!userExact) {
+            if (mark) {
+                mark.textContent = "!";
+                mark.className = "feedback-mark err";
+                mark.title = "Campo vacío";
+            }
+            input.classList.add('is-wrong');
+            return false;
+        }
+
+        if (validExact.includes(userExact)) {
+            if (mark) {
+                mark.textContent = "✓";
+                mark.className = "feedback-mark ok";
+                mark.title = "¡Correcto!";
+            }
+            input.classList.add('is-correct');
+            return true;
+        } else if (validNoTilde.includes(userNoTilde)) {
+            if (mark) {
+                mark.textContent = "✓ (¡tilde!)";
+                mark.className = "feedback-mark warn";
+                mark.title = "¡Bien! Pero recuerda la tilde en la «í»";
+            }
+            input.classList.add('is-correct');
+            if (card) {
+                const note = card.querySelector('.item-note');
+                if (note) note.classList.add('show');
+            }
+            return true;
+        } else {
+            if (mark) {
+                mark.textContent = "✗";
+                mark.className = "feedback-mark err";
+                mark.title = "Revisa la persona o el participio";
+            }
+            input.classList.add('is-wrong');
+            if (card) {
+                const note = card.querySelector('.item-note');
+                if (note) note.classList.add('show');
+            }
+            return false;
+        }
+    }
+
+    function checkVisible() {
+        const containerSelector = currentTab === 1
+            ? '#section-1 .gap-input'
+            : currentTab === 2
+            ? '#section-2 .gap-input'
+            : '.gap-input';
+
+        document.querySelectorAll(containerSelector).forEach(inp => {
+            checkSingleInput(inp);
+        });
+
+        updateScoreCounter();
+    }
+
+    function toggleNotes() {
+        notesVisible = !notesVisible;
+        document.querySelectorAll('.item-note').forEach(note => {
+            note.classList.toggle('show', notesVisible);
+        });
+    }
+
+    function updateProgressCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let filled = 0;
+        allInputs.forEach(inp => {
+            if (normalizeExact(inp.value) !== "") filled++;
+        });
+        document.getElementById('progress-pill').textContent = `Completados: ${filled} / ${allInputs.length}`;
+    }
+
+    function updateScoreCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let correct = 0;
+        allInputs.forEach(inp => {
+            const rawAns = inp.getAttribute('data-ans') || "";
+            const validNoTilde = rawAns.split('|').map(removeAccents);
+            const userNoTilde = removeAccents(inp.value);
+            if (userNoTilde !== "" && validNoTilde.includes(userNoTilde)) {
+                correct++;
+            }
+        });
+        document.getElementById('score-summary').textContent = `Aciertos: ${correct} / ${allInputs.length}`;
+    }
+
+    function saveProgress() {
+        const data = {};
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            data[inp.id] = inp.value;
+        });
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {}
+    }
+
+    function loadProgress() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.querySelectorAll('.gap-input').forEach(inp => {
+                    if (data[inp.id] !== undefined) {
+                        inp.value = data[inp.id];
+                    }
+                });
+            }
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    function resetAll() {
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            inp.value = "";
+            inp.classList.remove('is-correct', 'is-wrong');
+            const mark = inp.nextElementSibling;
+            if (mark) mark.textContent = "";
+        });
+        document.querySelectorAll('.item-note').forEach(note => note.classList.remove('show'));
+        notesVisible = false;
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    loadProgress();
+</script>
+
+</body>
+</html>
