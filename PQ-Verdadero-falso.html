@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las pequeñas cosas — Verdadero / Falso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #191919;
+            --bg-brown: #3d3522;
+            --border-brown: #54492f;
+            --bg-green: #1e2e24;
+            --bg-green-hover: #24382c;
+            --border-green: #2c4235;
+            --text-main: #e6e6e4;
+            --text-muted: #9b9b97;
+            --accent-gold: #d4a853;
+            --success: #4ade80;
+            --success-bg: rgba(74, 222, 128, 0.12);
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.12);
+            --font-notion: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-notion);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.55;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        /* Верхняя плашка в стиле коричневого callout из Notion */
+        .header-callout {
+            background-color: var(--bg-brown);
+            border: 1px solid var(--border-brown);
+            border-radius: 8px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-pill {
+            background-color: rgba(0, 0, 0, 0.35);
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 0.88em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-brown);
+        }
+
+        /* Панель навигации по блокам */
+        .tabs-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background-color: #242424;
+            color: var(--text-muted);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 9px 15px;
+            font-family: inherit;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            background-color: #2d2d2d;
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-green);
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        .tab-count {
+            font-size: 0.8em;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 7px;
+            border-radius: 10px;
+            color: var(--text-main);
+        }
+
+        /* Заголовок блока */
+        .block-header {
+            background-color: var(--bg-brown);
+            border-left: 4px solid var(--accent-gold);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-top: 24px;
+            margin-bottom: 14px;
+            font-size: 0.98em;
+        }
+
+        /* Карточка вопроса в темно-зеленом стиле Notion */
+        .q-card {
+            background-color: var(--bg-green);
+            border: 1px solid var(--border-green);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .q-card:hover {
+            background-color: var(--bg-green-hover);
+        }
+
+        .q-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .q-statement {
+            font-size: 0.96em;
+            flex: 1;
+        }
+
+        .q-num {
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        .vf-buttons {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .vf-btn {
+            background-color: rgba(0, 0, 0, 0.28);
+            color: var(--text-main);
+            border: 1px solid #3c5446;
+            border-radius: 6px;
+            padding: 7px 14px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.88em;
+            cursor: pointer;
+            transition: 0.2s;
+            min-width: 92px;
+        }
+
+        .vf-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .vf-btn.correct-selected {
+            background-color: var(--success-bg);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .vf-btn.wrong-selected {
+            background-color: var(--error-bg);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Пояснение с цитатой из фильма */
+        .explanation-box {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            background-color: rgba(0, 0, 0, 0.25);
+            border-left: 3px solid var(--accent-gold);
+            color: #d8d8d5;
+        }
+
+        .explanation-box.show {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .explanation-box strong {
+            color: var(--accent-gold);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Нижняя панель управления */
+        .footer-bar {
+            margin-top: 24px;
+            padding: 16px 20px;
+            background-color: var(--bg-brown);
+            border: 1px solid var(--border-brown);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .score-summary {
+            font-weight: 600;
+            color: var(--accent-gold);
+            font-size: 0.98em;
+        }
+
+        .btn-reset {
+            background-color: rgba(0, 0, 0, 0.35);
+            color: var(--text-main);
+            border: 1px solid var(--border-brown);
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.88em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        @media (max-width: 640px) {
+            .q-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .vf-buttons {
+                width: 100%;
+            }
+            .vf-btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Шапка в стиле коричневой плашки Notion -->
+    <div class="header-callout">
+        <div class="header-title">
+            <span>🎬</span>
+            <span>Comprensión del cortometraje: ¿Verdadero o Falso?</span>
+        </div>
+        <div class="progress-pill" id="progress-text">Respondidas: 0 / 16</div>
+    </div>
+
+    <!-- Вкладки блоков -->
+    <div class="tabs-bar">
+        <button class="tab-btn active" onclick="setTab(1)" id="tab-1">
+            🎬 Bloque 1 <span class="tab-count" id="count-1">0/6</span>
+        </button>
+        <button class="tab-btn" onclick="setTab(2)" id="tab-2">
+            🎬 Bloque 2 <span class="tab-count" id="count-2">0/5</span>
+        </button>
+        <button class="tab-btn" onclick="setTab(3)" id="tab-3">
+            🎬 Bloque 3 <span class="tab-count" id="count-3">0/5</span>
+        </button>
+        <button class="tab-btn" onclick="setTab('all')" id="tab-all">
+            📋 Ver todos (16)
+        </button>
+    </div>
+
+    <!-- Контейнер для карточек вопросов -->
+    <div id="questions-container"></div>
+
+    <!-- Нижняя панель со счетом и сбросом -->
+    <div class="footer-bar">
+        <div class="score-summary" id="score-text">Aciertos: 0 de 16</div>
+        <button class="btn-reset" onclick="resetQuiz()">↺ Reiniciar respuestas</button>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = "las_pequenas_cosas_vf_state";
+
+    const blocksData = [
+        {
+            id: 1,
+            title: "🎬 Bloque 1 (Partes 1 y 2: En el rodaje y la llegada de la guía)",
+            questions: [
+                {
+                    id: "b1_q1",
+                    num: 1,
+                    text: "Jean-Pierre no puede decir su frase porque piensa que parece sacada de un libro de autoayuda.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «Parece una frase sacada de un libro de autoayuda»."
+                },
+                {
+                    id: "b1_q2",
+                    num: 2,
+                    text: "El rodaje se para durante cuatro días porque las nuevas maquetas tardan en llegar desde Londres.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «Esta era la última maqueta... Tardan cuatro días en llegar las nuevas desde Londres»."
+                },
+                {
+                    id: "b1_q3",
+                    num: 3,
+                    text: "El agente de Jean-Pierre se queda con él en la isla durante los cuatro días libres.",
+                    ans: "F",
+                    exp: "<strong>Falso:</strong> Su agente se va a París porque Juliette va a hacer una comedia y está muy asustada."
+                },
+                {
+                    id: "b1_q4",
+                    num: 4,
+                    text: "A Jean-Pierre le encantan los cruasanes porque es francés.",
+                    ans: "F",
+                    exp: "<strong>Falso:</strong> Cuando Laia le trae cruasanes, él dice con ironía: «No me gustan los croissants»."
+                },
+                {
+                    id: "b1_q5",
+                    num: 5,
+                    text: "El sábado Laia no puede trabajar porque tiene una boda y no quiere dejar plantado a su novio.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «Tengo una boda, no puedo dejar plantado a mi novio»."
+                },
+                {
+                    id: "b1_q6",
+                    num: 6,
+                    text: "En el primer restaurante, Jean-Pierre prefiere comer completamente solo y Laia se queda en la furgoneta.",
+                    ans: "F",
+                    exp: "<strong>Falso:</strong> Jean-Pierre le dice: «Siéntese. No me gusta comer solo»."
+                }
+            ]
+        },
+        {
+            id: 2,
+            title: "🎬 Bloque 2 (Partes 3 y 4: Los días juntos y el conflicto)",
+            questions: [
+                {
+                    id: "b2_q1",
+                    num: 1,
+                    text: "Laia le da a Jean-Pierre el guion de su primer corto para saber su opinión.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «Es el guion de mi primer corto... me encantaría que lo leyera»."
+                },
+                {
+                    id: "b2_q2",
+                    num: 2,
+                    text: "En el restaurante anticuado, Jean-Pierre acepta hacer un «pica-pica» y compartir la comida con Laia.",
+                    ans: "F",
+                    exp: "<strong>Falso:</strong> Él no quiere compartir: «Usted pídase lo que quiera, yo comeré lo mío»."
+                },
+                {
+                    id: "b2_q3",
+                    num: 3,
+                    text: "Al día siguiente, hacen buceo, cocinan juntos un suquet y se ríen mucho.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «¡Que viva el suquet!»."
+                },
+                {
+                    id: "b2_q4",
+                    num: 4,
+                    text: "Laia piensa que a Jean-Pierre le cuesta vivir el momento porque no puede parar de pensar.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «Les cuesta mucho vivir el momento. No pueden parar de pensar. Como usted»."
+                },
+                {
+                    id: "b2_q5",
+                    num: 5,
+                    text: "Jean-Pierre ha leído todo el guion de Laia y le parece una obra maestra.",
+                    ans: "F",
+                    exp: "<strong>Falso:</strong> No lo ha leído, pero dice que su guion es «pueril, superficial y absolutamente innecesario»."
+                }
+            ]
+        },
+        {
+            id: 3,
+            title: "🎬 Bloque 3 (Partes 5 y 6: La boda y el desenlace)",
+            questions: [
+                {
+                    id: "b3_q1",
+                    num: 1,
+                    text: "El sábado por la mañana, otro conductor lleva a Jean-Pierre al lugar de la celebración de Laia.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «Lléveme aquí. Gracias»."
+                },
+                {
+                    id: "b3_q2",
+                    num: 2,
+                    text: "El novio de Laia está muy enfadado con Jean-Pierre y no quiere hablar con él.",
+                    ans: "F",
+                    exp: "<strong>Falso:</strong> El novio es muy amable, lo invita a sentarse con ellos y dice que Laia habla muy bien de él."
+                },
+                {
+                    id: "b3_q3",
+                    num: 3,
+                    text: "Jean-Pierre pide perdón a Laia y reconoce que la noche anterior «se pasó un poco».",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «No sé si debería decir esto, pero anoche me pasé un poco»."
+                },
+                {
+                    id: "b3_q4",
+                    num: 4,
+                    text: "Al final, Jean-Pierre lee el guion de Laia y escribe una nota diciendo que quiere ayudarla en su proyecto.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «...por eso me encantaría ayudarte en este proyecto»."
+                },
+                {
+                    id: "b3_q5",
+                    num: 5,
+                    text: "Cuando vuelve al rodaje, Jean-Pierre por fin dice la frase perfectamente.",
+                    ans: "V",
+                    exp: "<strong>Verdadero:</strong> «Muy bien, señor Bertrand. Ha estado usted maravilloso»."
+                }
+            ]
+        }
+    ];
+
+    let currentTab = 1;
+    let userAnswers = {};
+
+    function loadState() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                userAnswers = JSON.parse(saved);
+            }
+        } catch (e) {
+            userAnswers = {};
+        }
+    }
+
+    function saveState() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userAnswers));
+        } catch (e) {}
+    }
+
+    function setTab(tabId) {
+        currentTab = tabId;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        renderQuestions();
+    }
+
+    function selectOption(qId, choice) {
+        userAnswers[qId] = choice;
+        saveState();
+        renderQuestions();
+        updateCounters();
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        container.innerHTML = "";
+
+        const blocksToShow = currentTab === 'all'
+            ? blocksData
+            : blocksData.filter(b => b.id === currentTab);
+
+        blocksToShow.forEach(block => {
+            const header = document.createElement('div');
+            header.className = 'block-header';
+            header.textContent = block.title;
+            container.appendChild(header);
+
+            block.questions.forEach(q => {
+                const chosen = userAnswers[q.id];
+                const isAnswered = chosen !== undefined;
+                const isCorrect = chosen === q.ans;
+
+                const card = document.createElement('div');
+                card.className = 'q-card';
+
+                let vClass = "vf-btn";
+                let fClass = "vf-btn";
+
+                if (isAnswered) {
+                    if (chosen === "V") {
+                        vClass += isCorrect ? " correct-selected" : " wrong-selected";
+                    } else if (chosen === "F") {
+                        fClass += isCorrect ? " correct-selected" : " wrong-selected";
+                    }
+                }
+
+                card.innerHTML = `
+                    <div class="q-top">
+                        <div class="q-statement">
+                            <span class="q-num">${q.num}.</span> ${q.text}
+                        </div>
+                        <div class="vf-buttons">
+                            <button class="${vClass}" onclick="selectOption('${q.id}', 'V')">Verdadero</button>
+                            <button class="${fClass}" onclick="selectOption('${q.id}', 'F')">Falso</button>
+                        </div>
+                    </div>
+                    <div class="explanation-box ${isAnswered ? 'show' : ''}">
+                        ${isAnswered ? (isCorrect ? '✅ ' : '❌ ') + q.exp : ''}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        });
+    }
+
+    function updateCounters() {
+        let totalAnswered = 0;
+        let totalCorrect = 0;
+
+        blocksData.forEach(block => {
+            let blockAnswered = 0;
+            block.questions.forEach(q => {
+                if (userAnswers[q.id]) {
+                    blockAnswered++;
+                    totalAnswered++;
+                    if (userAnswers[q.id] === q.ans) {
+                        totalCorrect++;
+                    }
+                }
+            });
+            const countEl = document.getElementById(`count-${block.id}`);
+            if (countEl) {
+                countEl.textContent = `${blockAnswered}/${block.questions.length}`;
+            }
+        });
+
+        document.getElementById('progress-text').textContent = `Respondidas: ${totalAnswered} / 16`;
+        document.getElementById('score-text').textContent = `Aciertos: ${totalCorrect} de 16`;
+    }
+
+    function resetQuiz() {
+        userAnswers = {};
+        saveState();
+        renderQuestions();
+        updateCounters();
+    }
+
+    loadState();
+    renderQuestions();
+    updateCounters();
+</script>
+
+</body>
+</html>
