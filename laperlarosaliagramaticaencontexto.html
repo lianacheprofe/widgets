@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Perla — Rosalía (Retos de Gramática)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ (совпадает со светлым Notion) */
+        :root {
+            --bg-page: #ffffff;
+            --bg-callout: #f5efe2;
+            --border-callout: #e3d6be;
+            --bg-card: #faf8f5;
+            --bg-card-hover: #f3efe6;
+            --border-card: #e6dfd1;
+            --text-main: #37352f;
+            --text-muted: #787774;
+            --accent: #9a6e1f;
+            --accent-soft: rgba(154, 110, 31, 0.12);
+            --input-bg: #ffffff;
+            --input-border: #d0c6b4;
+            --success: #15803d;
+            --success-bg: rgba(21, 128, 61, 0.12);
+            --warning: #b45309;
+            --error: #b91c1c;
+            --error-bg: rgba(185, 28, 28, 0.1);
+            --font-notion: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* ТЕМНАЯ ТЕМА (автоматически из системы, если не выбрана вручную) */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-page: #191919;
+                --bg-callout: #3b3322;
+                --border-callout: #52462f;
+                --bg-card: #24221e;
+                --bg-card-hover: #2c2923;
+                --border-card: #38332a;
+                --text-main: #e6e6e4;
+                --text-muted: #a39e93;
+                --accent: #d4a853;
+                --accent-soft: rgba(212, 168, 83, 0.15);
+                --input-bg: rgba(0, 0, 0, 0.38);
+                --input-border: #5c5038;
+                --success: #4ade80;
+                --success-bg: rgba(74, 222, 128, 0.14);
+                --warning: #fbbf24;
+                --error: #f87171;
+                --error-bg: rgba(248, 113, 113, 0.14);
+            }
+        }
+
+        /* ПРИНУДИТЕЛЬНАЯ ТЕМНАЯ ТЕМА ПО КНОПКЕ */
+        :root[data-theme="dark"] {
+            --bg-page: #191919;
+            --bg-callout: #3b3322;
+            --border-callout: #52462f;
+            --bg-card: #24221e;
+            --bg-card-hover: #2c2923;
+            --border-card: #38332a;
+            --text-main: #e6e6e4;
+            --text-muted: #a39e93;
+            --accent: #d4a853;
+            --accent-soft: rgba(212, 168, 83, 0.15);
+            --input-bg: rgba(0, 0, 0, 0.38);
+            --input-border: #5c5038;
+            --success: #4ade80;
+            --success-bg: rgba(74, 222, 128, 0.14);
+            --warning: #fbbf24;
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-notion);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.65;
+            margin: 0;
+            padding: 18px;
+            transition: background-color 0.25s, color 0.25s;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        /* Верхняя плашка в стиле бронзового callout Notion */
+        .header-callout {
+            background-color: var(--bg-callout);
+            border: 1px solid var(--border-callout);
+            border-radius: 8px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .progress-pill {
+            background-color: var(--input-bg);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.88em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-callout);
+        }
+
+        .theme-toggle {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-callout);
+            border-radius: 6px;
+            padding: 5px 11px;
+            font-family: inherit;
+            font-size: 0.84em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Навигация и панель быстрой вставки спецсимволов */
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .tabs-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border-card);
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-family: inherit;
+            font-size: 0.88em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background-color: var(--bg-card-hover);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-callout);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .char-helper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: var(--bg-card);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-card);
+            font-size: 0.82em;
+            color: var(--text-muted);
+        }
+
+        .char-btn {
+            background-color: var(--bg-callout);
+            color: var(--accent);
+            border: 1px solid var(--border-callout);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .char-btn:hover {
+            background-color: var(--accent);
+            color: var(--bg-page);
+        }
+
+        /* Шпаргалка в стиле Callout из Notion */
+        .theory-callout {
+            background-color: var(--bg-callout);
+            border: 1px solid var(--border-callout);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-bottom: 18px;
+        }
+
+        .theory-title {
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theory-subtitle {
+            font-size: 0.92em;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .theory-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 0.92em;
+        }
+
+        .theory-list li {
+            margin-bottom: 8px;
+        }
+
+        .theory-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .hl {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .task-prompt {
+            font-size: 0.94em;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            font-style: italic;
+        }
+
+        .task-prompt strong {
+            color: var(--text-main);
+            font-style: normal;
+        }
+
+        /* Карточки заданий */
+        .q-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .q-card:hover {
+            background-color: var(--bg-card-hover);
+        }
+
+        .q-line {
+            font-size: 0.95em;
+            line-height: 2.1;
+        }
+
+        .q-num {
+            color: var(--accent);
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        .target-bold {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-color: var(--border-callout);
+            text-underline-offset: 3px;
+        }
+
+        .arrow-sep {
+            color: var(--accent);
+            font-weight: 700;
+            margin: 0 6px;
+        }
+
+        input.gap-input {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            padding: 4px 10px;
+            font-family: inherit;
+            font-size: 0.93em;
+            font-weight: 600;
+            width: 170px;
+            text-align: center;
+            outline: none;
+            transition: 0.2s;
+            margin: 0 3px;
+        }
+
+        input.gap-input.short-input {
+            width: 105px;
+        }
+
+        input.gap-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-soft);
+        }
+
+        input.gap-input.is-correct {
+            border-color: var(--success);
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        input.gap-input.is-wrong {
+            border-color: var(--error);
+            background-color: var(--error-bg);
+            color: var(--error);
+        }
+
+        .feedback-mark {
+            font-weight: 700;
+            font-size: 0.92em;
+            margin-right: 4px;
+        }
+
+        .feedback-mark.ok { color: var(--success); }
+        .feedback-mark.err { color: var(--error); }
+        .feedback-mark.warn { color: var(--warning); }
+
+        .item-note {
+            display: none;
+            margin-top: 8px;
+            padding: 7px 12px;
+            border-radius: 5px;
+            background-color: var(--bg-callout);
+            border-left: 3px solid var(--accent);
+            font-size: 0.85em;
+            color: var(--text-main);
+        }
+
+        .item-note.show {
+            display: block;
+        }
+
+        .item-note strong {
+            color: var(--accent);
+        }
+
+        /* Нижняя панель кнопок */
+        .footer-bar {
+            margin-top: 22px;
+            padding: 15px 20px;
+            background-color: var(--bg-callout);
+            border: 1px solid var(--border-callout);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background-color: var(--accent);
+            color: #191919;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.88em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .action-btn.secondary {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border-color: var(--border-callout);
+            font-weight: 600;
+        }
+
+        .action-btn.secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .score-summary {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.96em;
+        }
+
+        @media (max-width: 640px) {
+            input.gap-input {
+                width: 145px;
+            }
+            .footer-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Шапка -->
+    <div class="header-callout">
+        <div class="header-title">
+            <span>🦪</span>
+            <span>LA PERLA — ROSALÍA · Gramática y Estructuras</span>
+        </div>
+        <div class="header-right">
+            <div class="progress-pill" id="progress-pill">Completados: 0 / 17</div>
+            <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
+                🌓 Tema
+            </button>
+        </div>
+    </div>
+
+    <!-- Вкладки и вставка букв с ударением -->
+    <div class="top-controls">
+        <div class="tabs-bar">
+            <button type="button" class="tab-btn active" id="tab-1" onclick="switchTab(1)">
+                🛡️ Reto 1: Imperativo + Pronombres (8)
+            </button>
+            <button type="button" class="tab-btn" id="tab-2" onclick="switchTab(2)">
+                🔗 Reto 2: Preposiciones y Estructuras (8)
+            </button>
+            <button type="button" class="tab-btn" id="tab-all" onclick="switchTab('all')">
+                📋 Ver ambos retos
+            </button>
+        </div>
+
+        <div class="char-helper">
+            <span>Tildes:</span>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'á')">á</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'é')">é</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'í')">í</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'ó')">ó</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'ú')">ú</button>
+        </div>
+    </div>
+
+    <!-- ==================== RETO 1 ==================== -->
+    <div id="section-1">
+        <div class="theory-callout">
+            <div class="theory-title">
+                <span>🛡️</span>
+                <span>Reto 1. Manual de supervivencia: Imperativo + Pronombres combinados (OI + OD)</span>
+            </div>
+            <div class="theory-subtitle">
+                En la canción escuchamos: <em>«Nunca le prestes na', no lo devolverá»</em>. Recuerda cómo funcionan los pronombres al dar consejos u órdenes:
+            </div>
+            <ul class="theory-list">
+                <li><span class="hl">Imperativo afirmativo (+):</span> Los pronombres van <strong>detrás y unidos</strong> al verbo formando una sola palabra (¡cuidado con la tilde para mantener el acento original!): <em>Díselo, pónselos, devuélvemela</em>.</li>
+                <li><span class="hl">Imperativo negativo (-):</span> Los pronombres van <strong>delante y separados</strong> del verbo: <em>No se lo digas, nunca se las des</em>.</li>
+                <li><span class="hl">Cambio le / les &rarr; se:</span> Cuando coinciden un pronombre de Objeto Indirecto (<em>le/les</em>) y uno de Objeto Directo (<em>lo/la/los/las</em>), el primero siempre se transforma en <strong>se</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="task-prompt">
+            Transforma estos consejos para tratar con «una perla» usando el <strong>Imperativo (afirmativo o negativo) de tú</strong> y sustituyendo las palabras subrayadas por los pronombres combinados:
+        </div>
+
+        <!-- 1 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">1.</span> Nunca le prestes <span class="target-bold">dinero a un «bala perdida»</span>.
+                <span class="arrow-sep">&rarr;</span> Nunca
+                <input type="text" class="gap-input" id="r1_1" data-ans="se lo prestes|nunca se lo prestes"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> Nunca <strong>se lo prestes</strong>.</div>
+        </div>
+
+        <!-- 2 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">2.</span> Si te pide explicaciones absurdas, no le des <span class="target-bold">explicaciones a él</span>.
+                <span class="arrow-sep">&rarr;</span> No
+                <input type="text" class="gap-input" id="r1_2" data-ans="se las des|no se las des"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> No <strong>se las des</strong>.</div>
+        </div>
+
+        <!-- 3 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">3.</span> Si se instala en tu piso y tiene tus llaves, ¡quítale <span class="target-bold">las llaves a tu ex</span> ahora mismo!
+                <span class="arrow-sep">&rarr;</span> ¡<input type="text" class="gap-input" id="r1_3" data-ans="quítaselas"><span class="feedback-mark"></span> ahora mismo!
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> ¡<strong>Quítaselas</strong> ahora mismo! <em>(con tilde por ser sobresdrújula)</em>.</div>
+        </div>
+
+        <!-- 4 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">4.</span> Cuando empiece con su victimismo, dile <span class="target-bold">la verdad a él</span> a la cara.
+                <span class="arrow-sep">&rarr;</span>
+                <input type="text" class="gap-input" id="r1_4" data-ans="dísela"><span class="feedback-mark"></span> a la cara.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>Dísela</strong> a la cara <em>(con tilde por ser esdrújula)</em>.</div>
+        </div>
+
+        <!-- 5 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">5.</span> Si te regala flores después de hacerte «la 13-14», no le aceptes <span class="target-bold">las flores a ese chico</span>.
+                <span class="arrow-sep">&rarr;</span> No
+                <input type="text" class="gap-input" id="r1_5" data-ans="se las aceptes|no se las aceptes"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> No <strong>se las aceptes</strong>.</div>
+        </div>
+
+        <!-- 6 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">6.</span> Ponle <span class="target-bold">los límites a esa persona</span> desde el primer día.
+                <span class="arrow-sep">&rarr;</span>
+                <input type="text" class="gap-input" id="r1_6" data-ans="pónselos"><span class="feedback-mark"></span> desde el primer día.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>Pónselos</strong> desde el primer día <em>(con tilde)</em>.</div>
+        </div>
+
+        <!-- 7 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">7.</span> Si dejó su ropa en tu armario, mete su ropa en una caja y envíale <span class="target-bold">la caja a su madre</span>.
+                <span class="arrow-sep">&rarr;</span> ...y
+                <input type="text" class="gap-input" id="r1_7" data-ans="envíasela|y envíasela"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> ...y <strong>envíasela</strong> <em>(con tilde)</em>.</div>
+        </div>
+
+        <!-- 8 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">8.</span> Nunca le cuentes <span class="target-bold">tus puntos débiles a un narcisista</span>.
+                <span class="arrow-sep">&rarr;</span> Nunca
+                <input type="text" class="gap-input" id="r1_8" data-ans="se los cuentes|nunca se los cuentes"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> Nunca <strong>se los cuentes</strong>.</div>
+        </div>
+    </div>
+
+    <!-- ==================== RETO 2 ==================== -->
+    <div id="section-2" style="display: none;">
+        <div class="theory-callout">
+            <div class="theory-title">
+                <span>🔍</span>
+                <span>Reto 2. Verbos pronominales, preposiciones y estructuras de la canción</span>
+            </div>
+            <div class="theory-subtitle">
+                Fíjate en cómo se construyen estas expresiones de la letra:
+            </div>
+            <ul class="theory-list">
+                <li><span class="hl">Fiarse DE alguien / algo:</span> <em>«Es una perla, nadie se fía [de él]»</em> (confiar en alguien).</li>
+                <li><span class="hl">Servir DE algo (¿De qué te sirve + infinitivo / si...?):</span> <em>«¿De qué te sirve si siempre mientes?»</em> (expresar inutilidad).</li>
+                <li><span class="hl">Quedar CON alguien:</span> <em>«Quien queda contigo se drena»</em> (citarse o reunirse con alguien).</li>
+                <li><span class="hl">Elipsis con el que / la que / los que / las que:</span> <em>«Gasta el dinero que tiene y también el que no [tiene]»</em> (evita repetir el sustantivo anterior).</li>
+            </ul>
+        </div>
+
+        <div class="task-prompt">
+            Completa las frases con la preposición correcta (<strong>de, con, a, en</strong>), el pronombre reflexivo o el relativo (<strong>el que / la que / los que / las que</strong>) según el contexto:
+        </div>
+
+        <!-- 1 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">1.</span> Ese chico es un espejismo: yo que tú no me fiaría ni un pelo
+                <input type="text" class="gap-input short-input" id="r2_1" data-ans="de"><span class="feedback-mark"></span>
+                sus promesas.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>de</strong> <em>(fiarse de algo / alguien)</em>.</div>
+        </div>
+
+        <!-- 2 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">2.</span> ¿<input type="text" class="gap-input short-input" id="r2_2" data-ans="de"><span class="feedback-mark"></span>
+                qué te sirve bloquearlo en Instagram si luego le contestas a los mensajes de madrugada?
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>De</strong> <em>(¿de qué sirve...?)</em>.</div>
+        </div>
+
+        <!-- 3 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">3.</span> Cada vez que quedo
+                <input type="text" class="gap-input short-input" id="r2_3" data-ans="con"><span class="feedback-mark"></span>
+                él para tomar un café, vuelvo a casa agotada: siento que me drena la energía.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>con</strong> <em>(quedar con alguien)</em>.</div>
+        </div>
+
+        <!-- 4 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">4.</span> Es un parásito profesional: vive de los ahorros que tiene y también de
+                <input type="text" class="gap-input short-input" id="r2_4" data-ans="los que"><span class="feedback-mark"></span>
+                tienen sus amigos.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>los que</strong> <em>(se refiere a «los ahorros», masculino plural)</em>.</div>
+        </div>
+
+        <!-- 5 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">5.</span> Nunca asume la culpa de sus errores; siempre intenta echarle la culpa
+                <input type="text" class="gap-input short-input" id="r2_5" data-ans="a"><span class="feedback-mark"></span>
+                su «doppelgänger».
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>a</strong> <em>(echarle la culpa a alguien)</em>.</div>
+        </div>
+
+        <!-- 6 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">6.</span> Tiene tanta caradura que siempre
+                <input type="text" class="gap-input short-input" id="r2_6a" data-ans="se"><span class="feedback-mark"></span>
+                autoinvita a las fiestas en
+                <input type="text" class="gap-input short-input" id="r2_6b" data-ans="las que"><span class="feedback-mark"></span>
+                nadie quiere verlo.
+            </div>
+            <div class="item-note">🔑 <strong>Respuestas:</strong> <strong>se</strong> <em>(autoinvitarse)</em> / <strong>las que</strong> <em>(se refiere a «las fiestas»)</em>.</div>
+        </div>
+
+        <!-- 7 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">7.</span> Pide perdón mil veces, pero sus disculpas no sirven
+                <input type="text" class="gap-input short-input" id="r2_7" data-ans="de"><span class="feedback-mark"></span>
+                nada porque al día siguiente vuelve a hacerte la 13-14.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>de</strong> <em>(no servir de nada)</em>.</div>
+        </div>
+
+        <!-- 8 -->
+        <div class="q-card">
+            <div class="q-line">
+                <span class="q-num">8.</span> Presume de las conquistas que ha tenido y hasta de
+                <input type="text" class="gap-input short-input" id="r2_8" data-ans="las que"><span class="feedback-mark"></span>
+                se ha inventado.
+            </div>
+            <div class="item-note">🔑 <strong>Respuesta:</strong> <strong>las que</strong> <em>(se refiere a «las conquistas», femenino plural)</em>.</div>
+        </div>
+    </div>
+
+    <!-- Нижняя панель -->
+    <div class="footer-bar">
+        <div class="btn-group">
+            <button type="button" class="action-btn" onclick="checkVisible()">✓ Comprobar respuestas</button>
+            <button type="button" class="action-btn secondary" onclick="toggleNotes()">🔑 Mostrar / Ocultar claves</button>
+            <button type="button" class="action-btn secondary" onclick="resetAll()">↺ Reiniciar</button>
+        </div>
+        <div class="score-summary" id="score-summary">Aciertos: 0 / 17</div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = "la_perla_retos_gramatica_v1";
+    const THEME_KEY = "la_perla_rosalia_theme";
+    let activeInput = null;
+    let currentTab = 1;
+    let notesVisible = false;
+
+    function initTheme() {
+        try {
+            const savedTheme = localStorage.getItem(THEME_KEY);
+            if (savedTheme === "dark" || savedTheme === "light") {
+                document.documentElement.setAttribute("data-theme", savedTheme);
+            }
+        } catch (e) {}
+    }
+
+    function toggleTheme() {
+        const root = document.documentElement;
+        const currentAttr = root.getAttribute("data-theme");
+        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        let nextTheme;
+        if (!currentAttr) {
+            nextTheme = systemDark ? "light" : "dark";
+        } else {
+            nextTheme = currentAttr === "dark" ? "light" : "dark";
+        }
+
+        root.setAttribute("data-theme", nextTheme);
+        try {
+            localStorage.setItem(THEME_KEY, nextTheme);
+        } catch (e) {}
+    }
+
+    document.querySelectorAll('.gap-input').forEach(inp => {
+        inp.addEventListener('focus', () => {
+            activeInput = inp;
+        });
+        inp.addEventListener('input', () => {
+            saveProgress();
+            updateProgressCounter();
+        });
+        inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                checkSingleInput(inp);
+                updateScoreCounter();
+            }
+        });
+    });
+
+    function insertChar(e, char) {
+        e.preventDefault();
+        if (!activeInput) return;
+        const start = activeInput.selectionStart;
+        const end = activeInput.selectionEnd;
+        const val = activeInput.value;
+        activeInput.value = val.substring(0, start) + char + val.substring(end);
+        activeInput.selectionStart = activeInput.selectionEnd = start + char.length;
+        activeInput.focus();
+        saveProgress();
+        updateProgressCounter();
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+
+        const s1 = document.getElementById('section-1');
+        const s2 = document.getElementById('section-2');
+
+        if (tab === 1) {
+            s1.style.display = 'block';
+            s2.style.display = 'none';
+        } else if (tab === 2) {
+            s1.style.display = 'none';
+            s2.style.display = 'block';
+        } else {
+            s1.style.display = 'block';
+            s2.style.display = 'block';
+        }
+    }
+
+    function normalizeExact(str) {
+        return (str || "")
+            .toLowerCase()
+            .trim()
+            .replace(/[¡!¿?.,]/g, "")
+            .replace(/\s+/g, " ");
+    }
+
+    function removeAccents(str) {
+        return normalizeExact(str).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function checkSingleInput(input) {
+        const rawAns = input.getAttribute('data-ans') || "";
+        const validExact = rawAns.split('|').map(normalizeExact);
+        const validNoTilde = rawAns.split('|').map(removeAccents);
+
+        const userExact = normalizeExact(input.value);
+        const userNoTilde = removeAccents(input.value);
+        const mark = input.nextElementSibling;
+        const card = input.closest('.q-card');
+
+        input.classList.remove('is-correct', 'is-wrong');
+
+        if (!userExact) {
+            if (mark) {
+                mark.textContent = "!";
+                mark.className = "feedback-mark err";
+                mark.title = "Campo vacío";
+            }
+            input.classList.add('is-wrong');
+            return false;
+        }
+
+        if (validExact.includes(userExact)) {
+            if (mark) {
+                mark.textContent = "✓";
+                mark.className = "feedback-mark ok";
+                mark.title = "¡Correcto!";
+            }
+            input.classList.add('is-correct');
+            return true;
+        } else if (validNoTilde.includes(userNoTilde)) {
+            if (mark) {
+                mark.textContent = "✓ (¡tilde!)";
+                mark.className = "feedback-mark warn";
+                mark.title = "¡Bien! Pero recuerda poner la tilde";
+            }
+            input.classList.add('is-correct');
+            if (card) {
+                const note = card.querySelector('.item-note');
+                if (note) note.classList.add('show');
+            }
+            return true;
+        } else {
+            if (mark) {
+                mark.textContent = "✗";
+                mark.className = "feedback-mark err";
+                mark.title = "Revisa la estructura";
+            }
+            input.classList.add('is-wrong');
+            if (card) {
+                const note = card.querySelector('.item-note');
+                if (note) note.classList.add('show');
+            }
+            return false;
+        }
+    }
+
+    function checkVisible() {
+        const selector = currentTab === 1
+            ? '#section-1 .gap-input'
+            : currentTab === 2
+            ? '#section-2 .gap-input'
+            : '.gap-input';
+
+        document.querySelectorAll(selector).forEach(inp => {
+            checkSingleInput(inp);
+        });
+        updateScoreCounter();
+    }
+
+    function toggleNotes() {
+        notesVisible = !notesVisible;
+        document.querySelectorAll('.item-note').forEach(note => {
+            note.classList.toggle('show', notesVisible);
+        });
+    }
+
+    function updateProgressCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let filled = 0;
+        allInputs.forEach(inp => {
+            if (normalizeExact(inp.value) !== "") filled++;
+        });
+        document.getElementById('progress-pill').textContent = `Completados: ${filled} / ${allInputs.length}`;
+    }
+
+    function updateScoreCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let correct = 0;
+        allInputs.forEach(inp => {
+            const rawAns = inp.getAttribute('data-ans') || "";
+            const validNoTilde = rawAns.split('|').map(removeAccents);
+            const userNoTilde = removeAccents(inp.value);
+            if (userNoTilde !== "" && validNoTilde.includes(userNoTilde)) {
+                correct++;
+            }
+        });
+        document.getElementById('score-summary').textContent = `Aciertos: ${correct} / ${allInputs.length}`;
+    }
+
+    function saveProgress() {
+        const data = {};
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            data[inp.id] = inp.value;
+        });
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {}
+    }
+
+    function loadProgress() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.querySelectorAll('.gap-input').forEach(inp => {
+                    if (data[inp.id] !== undefined) {
+                        inp.value = data[inp.id];
+                    }
+                });
+            }
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    function resetAll() {
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            inp.value = "";
+            inp.classList.remove('is-correct', 'is-wrong');
+            const mark = inp.nextElementSibling;
+            if (mark) mark.textContent = "";
+        });
+        document.querySelectorAll('.item-note').forEach(note => note.classList.remove('show'));
+        notesVisible = false;
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    initTheme();
+    loadProgress();
+</script>
+
+</body>
+</html>
