@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las pequeñas cosas — Gramática B1–B2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ (совпадает со светлым Notion) */
+        :root {
+            --bg-main: #ffffff;
+            --bg-brown: #f4eee0;
+            --border-brown: #e2d5bc;
+            --bg-green: #edf3ec;
+            --bg-green-hover: #e3ece1;
+            --border-green: #cfe0cd;
+            --text-main: #37352f;
+            --text-muted: #787774;
+            --text-intro: #4a4843;
+            --text-note: #37352f;
+            --accent-gold: #9a6700;
+            --accent-focus: rgba(154, 103, 0, 0.18);
+            --surface-subtle: #f7f6f3;
+            --surface-subtle-hover: #efede8;
+            --border-subtle: #e3e2de;
+            --intro-bg: #f9f8f6;
+            --pill-bg: #ffffff;
+            --tag-bg: rgba(154, 103, 0, 0.1);
+            --input-bg: #ffffff;
+            --input-border: #b7cbb4;
+            --note-bg: rgba(255, 255, 255, 0.78);
+            --btn-sec-bg: #ffffff;
+            --btn-sec-hover: #f9f6ef;
+            --sticky-bg: rgba(255, 255, 255, 0.92);
+            --success: #15803d;
+            --success-bg: rgba(21, 128, 61, 0.12);
+            --warning: #b45309;
+            --error: #dc2626;
+            --error-bg: rgba(220, 38, 38, 0.1);
+            --font-notion: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* ТЕМНАЯ ТЕМА АВТОМАТИЧЕСКИ (если в системе/браузере включен Dark Mode) */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-main: #191919;
+                --bg-brown: #3d3522;
+                --border-brown: #54492f;
+                --bg-green: #1e2e24;
+                --bg-green-hover: #24382c;
+                --border-green: #2c4235;
+                --text-main: #e6e6e4;
+                --text-muted: #9b9b97;
+                --text-intro: #cccccc;
+                --text-note: #d8d8d4;
+                --accent-gold: #d4a853;
+                --accent-focus: rgba(212, 168, 83, 0.22);
+                --surface-subtle: #242424;
+                --surface-subtle-hover: #2d2d2d;
+                --border-subtle: #333333;
+                --intro-bg: rgba(255, 255, 255, 0.03);
+                --pill-bg: rgba(0, 0, 0, 0.35);
+                --tag-bg: rgba(212, 168, 83, 0.14);
+                --input-bg: rgba(0, 0, 0, 0.35);
+                --input-border: #3c5446;
+                --note-bg: rgba(0, 0, 0, 0.28);
+                --btn-sec-bg: rgba(0, 0, 0, 0.35);
+                --btn-sec-hover: rgba(0, 0, 0, 0.5);
+                --sticky-bg: rgba(25, 25, 25, 0.92);
+                --success: #4ade80;
+                --success-bg: rgba(74, 222, 128, 0.14);
+                --warning: #fbbf24;
+                --error: #f87171;
+                --error-bg: rgba(248, 113, 113, 0.14);
+            }
+        }
+
+        /* ПРИНУДИТЕЛЬНАЯ ТЕМНАЯ ТЕМА ПО КНОПКЕ */
+        :root[data-theme="dark"] {
+            --bg-main: #191919;
+            --bg-brown: #3d3522;
+            --border-brown: #54492f;
+            --bg-green: #1e2e24;
+            --bg-green-hover: #24382c;
+            --border-green: #2c4235;
+            --text-main: #e6e6e4;
+            --text-muted: #9b9b97;
+            --text-intro: #cccccc;
+            --text-note: #d8d8d4;
+            --accent-gold: #d4a853;
+            --accent-focus: rgba(212, 168, 83, 0.22);
+            --surface-subtle: #242424;
+            --surface-subtle-hover: #2d2d2d;
+            --border-subtle: #333333;
+            --intro-bg: rgba(255, 255, 255, 0.03);
+            --pill-bg: rgba(0, 0, 0, 0.35);
+            --tag-bg: rgba(212, 168, 83, 0.14);
+            --input-bg: rgba(0, 0, 0, 0.35);
+            --input-border: #3c5446;
+            --note-bg: rgba(0, 0, 0, 0.28);
+            --btn-sec-bg: rgba(0, 0, 0, 0.35);
+            --btn-sec-hover: rgba(0, 0, 0, 0.5);
+            --sticky-bg: rgba(25, 25, 25, 0.92);
+            --success: #4ade80;
+            --success-bg: rgba(74, 222, 128, 0.14);
+            --warning: #fbbf24;
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Компактные поля специально под iframe в Notion */
+        body {
+            font-family: var(--font-notion);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 10px 12px 16px;
+            transition: background-color 0.25s, color 0.25s;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Верхняя плашка в стиле коричневого callout из Notion */
+        .header-callout {
+            background-color: var(--bg-brown);
+            border: 1px solid var(--border-brown);
+            border-radius: 8px;
+            padding: 11px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 1em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .progress-pill {
+            background-color: var(--pill-bg);
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 0.84em;
+            padding: 4px 11px;
+            border-radius: 20px;
+            border: 1px solid var(--border-brown);
+        }
+
+        .theme-toggle {
+            background-color: var(--pill-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-brown);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-family: inherit;
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* Закрепленная панель навигации и кнопок ударений для удобства прокрутки в Notion */
+        .top-controls {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: var(--sticky-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 8px 0;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tabs-bar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--surface-subtle);
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 7px 12px;
+            font-family: inherit;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--surface-subtle-hover);
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-green);
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        .char-helper {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background-color: var(--surface-subtle);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.8em;
+            color: var(--text-muted);
+        }
+
+        .char-btn {
+            background-color: var(--bg-brown);
+            color: var(--accent-gold);
+            border: 1px solid var(--border-brown);
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.92em;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .char-btn:hover {
+            background-color: var(--accent-gold);
+            color: #ffffff;
+        }
+
+        /* Заголовок подблока и инструкция */
+        .block-header {
+            background-color: var(--bg-brown);
+            border-left: 4px solid var(--accent-gold);
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .section-intro {
+            background-color: var(--intro-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            color: var(--text-intro);
+        }
+
+        .section-intro strong {
+            color: var(--accent-gold);
+        }
+
+        /* Карточка реплики в зеленом стиле Notion */
+        .sentence-card {
+            background-color: var(--bg-green);
+            border: 1px solid var(--border-green);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 9px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .sentence-card:hover {
+            background-color: var(--bg-green-hover);
+        }
+
+        .sentence-line {
+            font-size: 0.94em;
+            line-height: 2.05;
+        }
+
+        .q-num {
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .nuance-tag {
+            display: inline-block;
+            background-color: var(--tag-bg);
+            color: var(--accent-gold);
+            border: 1px solid var(--border-brown);
+            border-radius: 4px;
+            padding: 1px 7px;
+            font-size: 0.78em;
+            font-weight: 600;
+            margin-right: 6px;
+            vertical-align: baseline;
+        }
+
+        .verb-hint {
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-size: 0.88em;
+            margin: 0 2px;
+        }
+
+        input.gap-input {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            padding: 3px 9px;
+            font-family: inherit;
+            font-size: 0.93em;
+            font-weight: 600;
+            width: 148px;
+            text-align: center;
+            outline: none;
+            transition: 0.2s;
+            margin: 0 3px;
+        }
+
+        input.gap-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 2px var(--accent-focus);
+        }
+
+        input.gap-input.is-correct {
+            border-color: var(--success);
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        input.gap-input.is-wrong {
+            border-color: var(--error);
+            background-color: var(--error-bg);
+            color: var(--error);
+        }
+
+        .feedback-mark {
+            font-weight: 700;
+            font-size: 0.9em;
+            margin-right: 3px;
+        }
+
+        .feedback-mark.ok { color: var(--success); }
+        .feedback-mark.err { color: var(--error); }
+        .feedback-mark.warn { color: var(--warning); }
+
+        .item-note {
+            display: none;
+            margin-top: 7px;
+            padding: 7px 12px;
+            border-radius: 5px;
+            background-color: var(--note-bg);
+            border-left: 3px solid var(--accent-gold);
+            font-size: 0.84em;
+            color: var(--text-note);
+            line-height: 1.5;
+        }
+
+        .item-note.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .item-note strong {
+            color: var(--accent-gold);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Нижняя панель кнопок */
+        .footer-bar {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background-color: var(--bg-brown);
+            border: 1px solid var(--border-brown);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background-color: var(--bg-green);
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-family: inherit;
+            font-size: 0.86em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--accent-gold);
+            color: #ffffff;
+        }
+
+        .action-btn.secondary {
+            background-color: var(--btn-sec-bg);
+            color: var(--text-main);
+            border-color: var(--border-brown);
+        }
+
+        .action-btn.secondary:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            background-color: var(--btn-sec-hover);
+        }
+
+        .score-summary {
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-size: 0.92em;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 8px;
+            }
+            input.gap-input {
+                width: 132px;
+            }
+            .footer-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Шапка -->
+    <div class="header-callout">
+        <div class="header-title">
+            <span>🎬</span>
+            <span>Las pequeñas cosas — Gramática en contexto (Nivel B1–B2)</span>
+        </div>
+        <div class="header-right">
+            <div class="progress-pill" id="progress-pill">Completados: 0 / 30</div>
+            <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
+                🌓 Tema
+            </button>
+        </div>
+    </div>
+
+    <!-- Вкладки и кнопки быстрой вставки испанских букв -->
+    <div class="top-controls">
+        <div class="tabs-bar">
+            <button type="button" class="tab-btn active" id="tab-1" onclick="switchTab(1)">
+                🕰️ Bloque 1: Contraste de pasados (12)
+            </button>
+            <button type="button" class="tab-btn" id="tab-2" onclick="switchTab(2)">
+                ✨ Bloque 2: Subjuntivo, Condicional e Imperativo (12)
+            </button>
+            <button type="button" class="tab-btn" id="tab-all" onclick="switchTab('all')">
+                📋 Ver ambos
+            </button>
+        </div>
+
+        <div class="char-helper">
+            <span>Tildes:</span>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'á')">á</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'é')">é</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'í')">í</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'ó')">ó</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'ú')">ú</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'ñ')">ñ</button>
+        </div>
+    </div>
+
+    <!-- ==================== BLOQUE 1 ==================== -->
+    <div id="section-1">
+        <div class="block-header">1. Contraste de pasados: ¿Pretérito Perfecto, Indefinido o Imperfecto?</div>
+        <div class="section-intro">
+            Completa los diálogos reales y el contexto del cortometraje conjugando los verbos entre paréntesis en el tiempo del pasado adecuado (<strong>Pretérito Perfecto, Pretérito Indefinido o Pretérito Imperfecto</strong>). Fíjate bien en los marcadores temporales y en la intención del hablante.
+        </div>
+
+        <!-- 1.1 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">1.</span> — Esta vez <span class="verb-hint">(FALTAR, ello)</span>
+                <input type="text" class="gap-input" id="b1_1a" data-ans="ha faltado"><span class="feedback-mark"></span>
+                poco. ¿<span class="verb-hint">(AVERIGUAR, tú)</span>
+                <input type="text" class="gap-input" id="b1_1b" data-ans="has averiguado"><span class="feedback-mark"></span>
+                algo?
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>ha faltado / Has averiguado</strong> — Marcador «esta vez» y pasado inmediato conectado con el presente &rarr; <em>Pretérito Perfecto</em>.
+            </div>
+        </div>
+
+        <!-- 1.2 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">2.</span> — ¡Señor director, esta <span class="verb-hint">(SER)</span>
+                <input type="text" class="gap-input" id="b1_2" data-ans="era"><span class="feedback-mark"></span>
+                la última maqueta! Se acaba de romper.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>era</strong> — Descripción del estado o cualidad del objeto hasta ese momento &rarr; <em>Pretérito Imperfecto</em>.
+            </div>
+        </div>
+
+        <!-- 1.3 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">3.</span> — A ver, Jean-Pierre, esta semana ya <span class="verb-hint">(DESPEDIR, tú)</span>
+                <input type="text" class="gap-input" id="b1_3" data-ans="has despedido"><span class="feedback-mark"></span>
+                a seis asistentes.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>has despedido</strong> — «Esta semana» + «ya» (tiempo no terminado, experiencia acumulada hasta hoy) &rarr; <em>Pretérito Perfecto</em>.
+            </div>
+        </div>
+
+        <!-- 1.4 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">4.</span> — Bueno, antes este restaurante <span class="verb-hint">(ESTAR)</span>
+                <input type="text" class="gap-input" id="b1_4a" data-ans="estaba"><span class="feedback-mark"></span>
+                muy bien, pero ahora se <span class="verb-hint">(QUEDAR)</span>
+                <input type="text" class="gap-input" id="b1_4b" data-ans="ha quedado|se ha quedado"><span class="feedback-mark"></span>
+                un poco anticuado.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>estaba / ha quedado</strong> — «Antes» (descripción habitual en el pasado &rarr; <em>Imperfecto</em>) vs. cambio con resultado visible «ahora» (&rarr; <em>Pretérito Perfecto</em>).
+            </div>
+        </div>
+
+        <!-- 1.5 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">5.</span> — ¿Qué tal la merluza? ¿Le <span class="verb-hint">(GUSTAR)</span>
+                <input type="text" class="gap-input" id="b1_5a" data-ans="ha gustado"><span class="feedback-mark"></span>?
+                — Se lo <span class="verb-hint">(DECIR, yo)</span>
+                <input type="text" class="gap-input" id="b1_5b" data-ans="dije"><span class="feedback-mark"></span>
+                ayer: mañana escojo yo el sitio.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>ha gustado / dije</strong> — Valoración de una comida recién terminada (<em>Perfecto</em>) vs. acción puntual en un momento pasado cerrado, «ayer» (<em>Indefinido</em>).
+            </div>
+        </div>
+
+        <!-- 1.6 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">6.</span> — Buenos días. Como me <span class="verb-hint">(PEDIR, usted)</span>
+                <input type="text" class="gap-input" id="b1_6a" data-ans="pidió"><span class="feedback-mark"></span>
+                ayer por la tarde, hoy <span class="verb-hint">(PREPARAR, yo)</span>
+                <input type="text" class="gap-input" id="b1_6b" data-ans="he preparado"><span class="feedback-mark"></span>
+                un día de buceo.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>pidió / he preparado</strong> — «Ayer por la tarde» (pasado cerrado &rarr; <em>Indefinido</em>) vs. «hoy» (día actual &rarr; <em>Pretérito Perfecto</em>).
+            </div>
+        </div>
+
+        <!-- 1.7 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">7.</span> — ¿Y el guion? ¿<span class="verb-hint">(TENER, usted)</span>
+                <input type="text" class="gap-input" id="b1_7a" data-ans="ha tenido"><span class="feedback-mark"></span>
+                tiempo de leerlo? — Sí <span class="verb-hint">(TENER, yo)</span>
+                <input type="text" class="gap-input" id="b1_7b" data-ans="he tenido"><span class="feedback-mark"></span>
+                tiempo, pero no lo <span class="verb-hint">(LEER, yo)</span>
+                <input type="text" class="gap-input" id="b1_7c" data-ans="he leído"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>Ha tenido / he tenido / he leído</strong> — Experiencia reciente sin marcador de pasado cerrado; importa el resultado actual &rarr; <em>Pretérito Perfecto</em> (con tilde en <em>leído</em>).
+            </div>
+        </div>
+
+        <!-- 1.8 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">8.</span> — ¿Y el desayuno? — Lo siento, a mí nadie me <span class="verb-hint">(DECIR)</span>
+                <input type="text" class="gap-input" id="b1_8" data-ans="ha dicho"><span class="feedback-mark"></span>
+                nada de ningún desayuno esta mañana.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>ha dicho</strong> — «Esta mañana» (periodo actual aún abierto) + participio irregular <em>dicho</em> &rarr; <em>Pretérito Perfecto</em>.
+            </div>
+        </div>
+
+        <!-- 1.9 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">9.</span> — ¡No sabe cómo habla Laia de usted! Nos <span class="verb-hint">(CONTAR, ella)</span>
+                <input type="text" class="gap-input" id="b1_9a" data-ans="ha contado"><span class="feedback-mark"></span>
+                que es usted exactamente como <span class="verb-hint">(ESPERAR, ella)</span>
+                <input type="text" class="gap-input" id="b1_9b" data-ans="esperaba"><span class="feedback-mark"></span>
+                antes de conocerle.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>ha contado / esperaba</strong> — Conversación muy reciente en la boda (<em>Perfecto</em>) vs. expectativa mental previa en el pasado (<em>Imperfecto</em>).
+            </div>
+        </div>
+
+        <!-- 1.10 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">10.</span> — No sé si debería decir esto, pero anoche me <span class="verb-hint">(PASAR, yo)</span>
+                <input type="text" class="gap-input" id="b1_10" data-ans="pasé|me pasé"><span class="feedback-mark"></span>
+                un poco con mis comentarios.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>pasé</strong> — Marcador «anoche» (tiempo cerrado y terminado) &rarr; <em>Pretérito Indefinido</em>.
+            </div>
+        </div>
+
+        <!-- 1.11 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">11.</span> — Gracias por estos días en la isla; me <span class="verb-hint">(HACER, ellos)</span>
+                <input type="text" class="gap-input" id="b1_11" data-ans="han hecho"><span class="feedback-mark"></span>
+                recordar qué es lo más importante.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>han hecho</strong> — Marcador «estos días» (experiencia reciente que sigue viva en el presente) &rarr; <em>Pretérito Perfecto</em>.
+            </div>
+        </div>
+
+        <!-- 1.12 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">12.</span> — Al principio del viaje, Jean-Pierre no <span class="verb-hint">(QUERER)</span>
+                <input type="text" class="gap-input" id="b1_12a" data-ans="quería"><span class="feedback-mark"></span>
+                hablar con nadie, pero al final <span class="verb-hint">(APARECER)</span>
+                <input type="text" class="gap-input" id="b1_12b" data-ans="apareció"><span class="feedback-mark"></span>
+                por sorpresa en la boda de Laia.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>quería / apareció</strong> — Actitud/estado psicológico inicial («al principio» &rarr; <em>Imperfecto</em>) vs. acción puntual que hace avanzar la historia («al final» &rarr; <em>Indefinido</em>).
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== BLOQUE 2 ==================== -->
+    <div id="section-2" style="display: none; margin-top: 16px;">
+        <div class="block-header">2. Matices B1–B2: Subjuntivo, cortesía, hipótesis e imperativo</div>
+        <div class="section-intro">
+            Completa las frases exactas del cortometraje con la forma correcta del verbo entre paréntesis (<strong>Presente o Imperfecto de Subjuntivo, Condicional Simple o Imperativo formal con «usted»</strong>). ¡Cuidado con la posición de los pronombres y las tildes!
+        </div>
+
+        <!-- 2.1 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">1.</span> <span class="nuance-tag">Advertencia coloquial</span> — A ver, Jean-Pierre, ya has despedido a seis. Como <span class="verb-hint">(SEGUIR, tú)</span>
+                <input type="text" class="gap-input" id="b2_1" data-ans="sigas"><span class="feedback-mark"></span>
+                así... ¡te vas a quedar solo!
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>sigas</strong> — «Como + Presente de Subjuntivo» expresa una advertencia o amenaza condicional («Si sigues así...»).
+            </div>
+        </div>
+
+        <!-- 2.2 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">2.</span> <span class="nuance-tag">Disponibilidad cortés</span> — Voy a estar en la furgo; cualquier cosa que <span class="verb-hint">(NECESITAR, usted)</span>
+                <input type="text" class="gap-input" id="b2_2" data-ans="necesite"><span class="feedback-mark"></span>, me llama.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>necesite</strong> — Oración de relativo con antecedente indefinido/futuro («cualquier cosa que...») &rarr; <em>Presente de Subjuntivo</em>.
+            </div>
+        </div>
+
+        <!-- 2.3 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">3.</span> <span class="nuance-tag">Imperativo formal + pronombre</span> — <span class="verb-hint">(SENTARSE, usted)</span>
+                <input type="text" class="gap-input" id="b2_3" data-ans="siéntese"><span class="feedback-mark"></span>, por favor. No me gusta comer solo.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>Siéntese</strong> — Imperativo afirmativo de «usted» con pronombre reflexivo enclítico (lleva tilde por ser palabra esdrújula).
+            </div>
+        </div>
+
+        <!-- 2.4 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">4.</span> <span class="nuance-tag">Estilo indirecto / prohibición</span> — Sé que no debería darle mi guion porque, de hecho, me han dicho que no lo <span class="verb-hint">(HACER, yo)</span>
+                <input type="text" class="gap-input" id="b2_4" data-ans="haga"><span class="feedback-mark"></span>.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>haga</strong> — Verbo de influencia/orden en estilo indirecto («decir que + Subjuntivo» cuando equivale a pedir o prohibir).
+            </div>
+        </div>
+
+        <!-- 2.5 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">5.</span> <span class="nuance-tag">Petición de máxima cortesía</span> — Es el guion de mi primer corto y me encantaría que lo <span class="verb-hint">(LEER, usted)</span>
+                <input type="text" class="gap-input" id="b2_5a" data-ans="leyera|leyese"><span class="feedback-mark"></span>
+                y me <span class="verb-hint">(DAR, usted)</span>
+                <input type="text" class="gap-input" id="b2_5b" data-ans="diera|diese"><span class="feedback-mark"></span>
+                su opinión.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>leyera (o leyese) / diera (o diese)</strong> — «Me encantaría que + Imperfecto de Subjuntivo» para hacer una petición delicada con mucha cortesía.
+            </div>
+        </div>
+
+        <!-- 2.6 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">6.</span> <span class="nuance-tag">Imperativo + relativo inespecífico</span> — ¿Compartir? No, gracias. Usted <span class="verb-hint">(PEDIRSE)</span>
+                <input type="text" class="gap-input" id="b2_6a" data-ans="pídase"><span class="feedback-mark"></span>
+                lo que <span class="verb-hint">(QUERER, usted)</span>
+                <input type="text" class="gap-input" id="b2_6b" data-ans="quiera"><span class="feedback-mark"></span>, yo comeré lo mío.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>pídase / quiera</strong> — Imperativo afirmativo formal con tilde (<em>pídase</em>) + relativo sin antecedente específico (<em>lo que quiera</em> &rarr; Subjuntivo).
+            </div>
+        </div>
+
+        <!-- 2.7 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">7.</span> <span class="nuance-tag">Consejo atenuado</span> — ¿Por qué le cuesta tanto disfrutar? <span class="verb-hint">(DEBER, usted)</span>
+                <input type="text" class="gap-input" id="b2_7" data-ans="debería"><span class="feedback-mark"></span>
+                dejarse llevar un poco.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>Debería</strong> — Condicional Simple de «deber» para dar un consejo suave sin sonar autoritario.
+            </div>
+        </div>
+
+        <!-- 2.8 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">8.</span> <span class="nuance-tag">Hipótesis / Condicional 2.º tipo</span> — ¿Qué <span class="verb-hint">(PASAR)</span>
+                <input type="text" class="gap-input" id="b2_8a" data-ans="pasaría"><span class="feedback-mark"></span>
+                si te <span class="verb-hint">(DECIR, yo)</span>
+                <input type="text" class="gap-input" id="b2_8b" data-ans="dijera|dijese"><span class="feedback-mark"></span>
+                que tu guion es pueril, superficial y absolutamente innecesario?
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>pasaría / dijera (o dijese)</strong> — Estructura hipotética: «¿Qué + Condicional Simple + si + Imperfecto de Subjuntivo?».
+            </div>
+        </div>
+
+        <!-- 2.9 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">9.</span> <span class="nuance-tag">Imperativo formal + pronombre</span> — Buenos días. <span class="verb-hint">(LLEVAR, usted + a mí)</span>
+                <input type="text" class="gap-input" id="b2_9" data-ans="lléveme"><span class="feedback-mark"></span>
+                a esta dirección, por favor. Gracias.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>Lléveme</strong> — Imperativo formal (<em>lleve</em>) + pronombre <em>me</em> unido al final &rarr; <em>Lléveme</em> (palabra esdrújula con tilde).
+            </div>
+        </div>
+
+        <!-- 2.10 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">10.</span> <span class="nuance-tag">Opinión negada</span> — ¿Entrar a la boda? No, no creo que <span class="verb-hint">(SER)</span>
+                <input type="text" class="gap-input" id="b2_10" data-ans="sea"><span class="feedback-mark"></span>
+                una buena idea.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>sea</strong> — Verbo de opinión en forma negativa («No creo que...») &rarr; <em>Presente de Subjuntivo</em>.
+            </div>
+        </div>
+
+        <!-- 2.11 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">11.</span> <span class="nuance-tag">Invitación cordial con usted</span> — ¡Pero qué hace ahí fuera, señor Bertrand! ¡<span class="verb-hint">(VENIR, usted)</span>
+                <input type="text" class="gap-input" id="b2_11" data-ans="venga"><span class="feedback-mark"></span>
+                con nosotros, hombre!
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>Venga</strong> — Imperativo afirmativo irregular de «venir» para la persona <em>usted</em>.
+            </div>
+        </div>
+
+        <!-- 2.12 -->
+        <div class="sentence-card">
+            <div class="sentence-line">
+                <span class="q-num">12.</span> <span class="nuance-tag">Finalidad con cambio de sujeto</span> — Gracias por ayudarme con el corto; te envío las nuevas páginas para que les <span class="verb-hint">(ECHAR, tú)</span>
+                <input type="text" class="gap-input" id="b2_12" data-ans="eches"><span class="feedback-mark"></span>
+                un vistazo antes del rodaje.
+            </div>
+            <div class="item-note">
+                🔑 <strong>Clave:</strong> <strong>eches</strong> — «Para que + Presente de Subjuntivo» (oración final con sujetos diferentes).
+            </div>
+        </div>
+    </div>
+
+    <!-- Нижняя панель управления -->
+    <div class="footer-bar">
+        <div class="btn-group">
+            <button type="button" class="action-btn" onclick="checkVisible()">✓ Comprobar respuestas</button>
+            <button type="button" class="action-btn secondary" onclick="toggleNotes()">🔑 Mostrar / Ocultar explicaciones</button>
+            <button type="button" class="action-btn secondary" onclick="resetAll()">↺ Reiniciar</button>
+        </div>
+        <div class="score-summary" id="score-summary">Aciertos: 0 / 30</div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = "las_pequenas_cosas_b1b2_v1";
+    const THEME_KEY = "las_pequenas_cosas_theme";
+    let activeInput = null;
+    let currentTab = 1;
+    let notesVisible = false;
+
+    function initTheme() {
+        try {
+            const savedTheme = localStorage.getItem(THEME_KEY);
+            if (savedTheme === "dark" || savedTheme === "light") {
+                document.documentElement.setAttribute("data-theme", savedTheme);
+            }
+        } catch (e) {}
+    }
+
+    function toggleTheme() {
+        const root = document.documentElement;
+        const currentAttr = root.getAttribute("data-theme");
+        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        let nextTheme;
+        if (!currentAttr) {
+            nextTheme = systemDark ? "light" : "dark";
+        } else {
+            nextTheme = currentAttr === "dark" ? "light" : "dark";
+        }
+
+        root.setAttribute("data-theme", nextTheme);
+        try {
+            localStorage.setItem(THEME_KEY, nextTheme);
+        } catch (e) {}
+    }
+
+    document.querySelectorAll('.gap-input').forEach(inp => {
+        inp.addEventListener('focus', () => {
+            activeInput = inp;
+        });
+        inp.addEventListener('input', () => {
+            saveProgress();
+            updateProgressCounter();
+        });
+        inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                checkSingleInput(inp);
+                updateScoreCounter();
+            }
+        });
+    });
+
+    function insertChar(e, char) {
+        e.preventDefault();
+        if (!activeInput) return;
+        const start = activeInput.selectionStart;
+        const end = activeInput.selectionEnd;
+        const val = activeInput.value;
+        activeInput.value = val.substring(0, start) + char + val.substring(end);
+        activeInput.selectionStart = activeInput.selectionEnd = start + char.length;
+        activeInput.focus();
+        saveProgress();
+        updateProgressCounter();
+    }
+
+    function normalizeExact(str) {
+        return (str || "")
+            .toLowerCase()
+            .trim()
+            .replace(/[¡!¿?.,]/g, "")
+            .replace(/\s+/g, " ");
+    }
+
+    function removeAccents(str) {
+        return normalizeExact(str).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+
+        const s1 = document.getElementById('section-1');
+        const s2 = document.getElementById('section-2');
+
+        if (tab === 1) {
+            s1.style.display = 'block';
+            s2.style.display = 'none';
+        } else if (tab === 2) {
+            s1.style.display = 'none';
+            s2.style.display = 'block';
+            s2.style.marginTop = '0';
+        } else {
+            s1.style.display = 'block';
+            s2.style.display = 'block';
+            s2.style.marginTop = '22px';
+        }
+    }
+
+    function checkSingleInput(input) {
+        const rawAns = input.getAttribute('data-ans') || "";
+        const validExact = rawAns.split('|').map(normalizeExact);
+        const validNoTilde = rawAns.split('|').map(removeAccents);
+
+        const userExact = normalizeExact(input.value);
+        const userNoTilde = removeAccents(input.value);
+        const mark = input.nextElementSibling;
+        const card = input.closest('.sentence-card');
+
+        input.classList.remove('is-correct', 'is-wrong');
+
+        if (!userExact) {
+            if (mark) {
+                mark.textContent = "!";
+                mark.className = "feedback-mark err";
+                mark.title = "Campo vacío";
+            }
+            input.classList.add('is-wrong');
+            return false;
+        }
+
+        if (validExact.includes(userExact)) {
+            if (mark) {
+                mark.textContent = "✓";
+                mark.className = "feedback-mark ok";
+                mark.title = "¡Correcto!";
+            }
+            input.classList.add('is-correct');
+            if (card) {
+                const note = card.querySelector('.item-note');
+                if (note) note.classList.add('show');
+            }
+            return true;
+        } else if (validNoTilde.includes(userNoTilde)) {
+            if (mark) {
+                mark.textContent = "✓ (¡tilde!)";
+                mark.className = "feedback-mark warn";
+                mark.title = "¡Bien! Pero recuerda poner la tilde";
+            }
+            input.classList.add('is-correct');
+            if (card) {
+                const note = card.querySelector('.item-note');
+                if (note) note.classList.add('show');
+            }
+            return true;
+        } else {
+            if (mark) {
+                mark.textContent = "✗";
+                mark.className = "feedback-mark err";
+                mark.title = "Revisa el tiempo, modo o pronombre";
+            }
+            input.classList.add('is-wrong');
+            if (card) {
+                const note = card.querySelector('.item-note');
+                if (note) note.classList.add('show');
+            }
+            return false;
+        }
+    }
+
+    function checkVisible() {
+        const containerSelector = currentTab === 1
+            ? '#section-1 .gap-input'
+            : currentTab === 2
+            ? '#section-2 .gap-input'
+            : '.gap-input';
+
+        document.querySelectorAll(containerSelector).forEach(inp => {
+            checkSingleInput(inp);
+        });
+
+        updateScoreCounter();
+    }
+
+    function toggleNotes() {
+        notesVisible = !notesVisible;
+        const selector = currentTab === 1
+            ? '#section-1 .item-note'
+            : currentTab === 2
+            ? '#section-2 .item-note'
+            : '.item-note';
+
+        document.querySelectorAll(selector).forEach(note => {
+            note.classList.toggle('show', notesVisible);
+        });
+    }
+
+    function updateProgressCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let filled = 0;
+        allInputs.forEach(inp => {
+            if (normalizeExact(inp.value) !== "") filled++;
+        });
+        document.getElementById('progress-pill').textContent = `Completados: ${filled} / ${allInputs.length}`;
+    }
+
+    function updateScoreCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let correct = 0;
+        allInputs.forEach(inp => {
+            const rawAns = inp.getAttribute('data-ans') || "";
+            const validNoTilde = rawAns.split('|').map(removeAccents);
+            const userNoTilde = removeAccents(inp.value);
+            if (userNoTilde !== "" && validNoTilde.includes(userNoTilde)) {
+                correct++;
+            }
+        });
+        document.getElementById('score-summary').textContent = `Aciertos: ${correct} / ${allInputs.length}`;
+    }
+
+    function saveProgress() {
+        const data = {};
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            data[inp.id] = inp.value;
+        });
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {}
+    }
+
+    function loadProgress() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.querySelectorAll('.gap-input').forEach(inp => {
+                    if (data[inp.id] !== undefined) {
+                        inp.value = data[inp.id];
+                    }
+                });
+            }
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    function resetAll() {
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            inp.value = "";
+            inp.classList.remove('is-correct', 'is-wrong');
+            const mark = inp.nextElementSibling;
+            if (mark) mark.textContent = "";
+        });
+        document.querySelectorAll('.item-note').forEach(note => note.classList.remove('show'));
+        notesVisible = false;
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    initTheme();
+    loadProgress();
+</script>
+
+</body>
+</html>
