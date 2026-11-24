@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Perla — Rosalía (Ejercicio Interactivo)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ (совпадает со светлым Notion) */
+        :root {
+            --bg-page: #ffffff;
+            --bg-callout: #f5efe2;
+            --border-callout: #e3d6be;
+            --bg-card: #faf8f5;
+            --bg-card-hover: #f3efe6;
+            --border-card: #e6dfd1;
+            --bg-chorus: #f2ead8;
+            --text-main: #37352f;
+            --text-muted: #787774;
+            --accent: #9a6e1f;
+            --accent-soft: rgba(154, 110, 31, 0.12);
+            --input-bg: #ffffff;
+            --input-border: #d0c6b4;
+            --success: #15803d;
+            --success-bg: rgba(21, 128, 61, 0.12);
+            --warning: #b45309;
+            --error: #b91c1c;
+            --error-bg: rgba(185, 28, 28, 0.1);
+            --font-notion: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* ТЕМНАЯ ТЕМА (автоматически из системы, если не выбрана вручную) */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-page: #191919;
+                --bg-callout: #3b3322;
+                --border-callout: #52462f;
+                --bg-card: #24221e;
+                --bg-card-hover: #2c2923;
+                --border-card: #38332a;
+                --bg-chorus: #2f291e;
+                --text-main: #e6e6e4;
+                --text-muted: #a39e93;
+                --accent: #d4a853;
+                --accent-soft: rgba(212, 168, 83, 0.15);
+                --input-bg: rgba(0, 0, 0, 0.38);
+                --input-border: #5c5038;
+                --success: #4ade80;
+                --success-bg: rgba(74, 222, 128, 0.14);
+                --warning: #fbbf24;
+                --error: #f87171;
+                --error-bg: rgba(248, 113, 113, 0.14);
+            }
+        }
+
+        /* ПРИНУДИТЕЛЬНАЯ ТЕМНАЯ ТЕМА ПО КНОПКЕ */
+        :root[data-theme="dark"] {
+            --bg-page: #191919;
+            --bg-callout: #3b3322;
+            --border-callout: #52462f;
+            --bg-card: #24221e;
+            --bg-card-hover: #2c2923;
+            --border-card: #38332a;
+            --bg-chorus: #2f291e;
+            --text-main: #e6e6e4;
+            --text-muted: #a39e93;
+            --accent: #d4a853;
+            --accent-soft: rgba(212, 168, 83, 0.15);
+            --input-bg: rgba(0, 0, 0, 0.38);
+            --input-border: #5c5038;
+            --success: #4ade80;
+            --success-bg: rgba(74, 222, 128, 0.14);
+            --warning: #fbbf24;
+            --error: #f87171;
+            --error-bg: rgba(248, 113, 113, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-notion);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.65;
+            margin: 0;
+            padding: 18px;
+            transition: background-color 0.25s, color 0.25s;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        /* Верхняя плашка в стиле бронзового callout из вашего Notion */
+        .header-callout {
+            background-color: var(--bg-callout);
+            border: 1px solid var(--border-callout);
+            border-radius: 8px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .progress-pill {
+            background-color: var(--input-bg);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.88em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-callout);
+        }
+
+        .theme-toggle {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-callout);
+            border-radius: 6px;
+            padding: 5px 11px;
+            font-family: inherit;
+            font-size: 0.84em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Панель инструментов (банк слов + спецсимволы) */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .tool-btn {
+            background-color: var(--bg-card);
+            color: var(--accent);
+            border: 1px solid var(--border-card);
+            border-radius: 6px;
+            padding: 7px 13px;
+            font-family: inherit;
+            font-size: 0.86em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tool-btn:hover {
+            border-color: var(--accent);
+            background-color: var(--bg-card-hover);
+        }
+
+        .char-helper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: var(--bg-card);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-card);
+            font-size: 0.82em;
+            color: var(--text-muted);
+        }
+
+        .char-btn {
+            background-color: var(--bg-callout);
+            color: var(--accent);
+            border: 1px solid var(--border-callout);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .char-btn:hover {
+            background-color: var(--accent);
+            color: var(--bg-page);
+        }
+
+        /* Скрываемый банк слов для помощи */
+        .word-bank {
+            display: none;
+            background-color: var(--bg-callout);
+            border: 1px solid var(--border-callout);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .word-bank.show {
+            display: flex;
+        }
+
+        .word-pill {
+            background-color: var(--input-bg);
+            color: var(--accent);
+            padding: 4px 11px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.86em;
+            border: 1px solid var(--border-callout);
+            cursor: pointer;
+            transition: 0.15s;
+            user-select: none;
+        }
+
+        .word-pill:hover {
+            background-color: var(--accent);
+            color: var(--bg-page);
+        }
+
+        /* Сетка строф песни */
+        .lyrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stanza-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 10px;
+            padding: 18px 20px;
+            font-size: 0.94em;
+            line-height: 2.15;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .stanza-card:hover {
+            background-color: var(--bg-card-hover);
+        }
+
+        .stanza-card.chorus {
+            background-color: var(--bg-chorus);
+            border-left: 4px solid var(--accent);
+        }
+
+        .stanza-label {
+            font-size: 0.78em;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .gap-num {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.9em;
+            margin-right: 2px;
+        }
+
+        .clue-hint {
+            color: var(--text-muted);
+            font-size: 0.86em;
+            font-style: italic;
+        }
+
+        input.gap-input {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            padding: 3px 9px;
+            font-family: inherit;
+            font-size: 0.93em;
+            font-weight: 600;
+            width: 138px;
+            text-align: center;
+            outline: none;
+            transition: 0.2s;
+            margin: 0 3px;
+        }
+
+        input.gap-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-soft);
+        }
+
+        input.gap-input.is-correct {
+            border-color: var(--success);
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        input.gap-input.is-wrong {
+            border-color: var(--error);
+            background-color: var(--error-bg);
+            color: var(--error);
+        }
+
+        .feedback-mark {
+            font-weight: 700;
+            font-size: 0.92em;
+            margin-right: 3px;
+        }
+
+        .feedback-mark.ok { color: var(--success); }
+        .feedback-mark.err { color: var(--error); }
+        .feedback-mark.warn { color: var(--warning); }
+
+        /* Блок ответов внизу */
+        .keys-box {
+            display: none;
+            margin-top: 18px;
+            padding: 16px 20px;
+            background-color: var(--bg-callout);
+            border: 1px solid var(--border-callout);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            font-size: 0.9em;
+            line-height: 1.7;
+        }
+
+        .keys-box.show {
+            display: block;
+        }
+
+        .keys-box strong {
+            color: var(--accent);
+        }
+
+        /* Нижняя панель кнопок */
+        .footer-bar {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background-color: var(--bg-callout);
+            border: 1px solid var(--border-callout);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background-color: var(--accent);
+            color: #191919;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 0.88em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .action-btn.secondary {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border-color: var(--border-callout);
+            font-weight: 600;
+        }
+
+        .action-btn.secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .score-summary {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.96em;
+        }
+
+        @media (max-width: 720px) {
+            .lyrics-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Шапка -->
+    <div class="header-callout">
+        <div class="header-title">
+            <span>🦪</span>
+            <span>LA PERLA — ROSALÍA · Completa la letra</span>
+        </div>
+        <div class="header-right">
+            <div class="progress-pill" id="progress-pill">Completados: 0 / 16</div>
+            <button type="button" class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Cambiar modo claro / oscuro">
+                🌓 Tema
+            </button>
+        </div>
+    </div>
+
+    <!-- Инструменты -->
+    <div class="toolbar">
+        <button type="button" class="tool-btn" onclick="toggleWordBank()">
+            💡 Mostrar / Ocultar banco de palabras
+        </button>
+
+        <div class="char-helper">
+            <span>Caracteres:</span>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'á')">á</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'é')">é</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'í')">í</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'ó')">ó</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, 'ä')">ä</button>
+            <button type="button" class="char-btn" onmousedown="insertChar(event, '\'')">'</button>
+        </div>
+    </div>
+
+    <!-- Банк слов (по клику на слово оно вставляется в активное поле) -->
+    <div class="word-bank" id="word-bank">
+        <span class="word-pill" onclick="fillFromBank('13-14')">13-14</span>
+        <span class="word-pill" onclick="fillFromBank('bala perdida')">bala perdida</span>
+        <span class="word-pill" onclick="fillFromBank('bras')">bras</span>
+        <span class="word-pill" onclick="fillFromBank('cotizar')">cotizar</span>
+        <span class="word-pill" onclick="fillFromBank('cuidao')">cuidao</span>
+        <span class="word-pill" onclick="fillFromBank('das pena')">das pena</span>
+        <span class="word-pill" onclick="fillFromBank('doppelgänger')">doppelgänger</span>
+        <span class="word-pill" onclick="fillFromBank('drena')">drena</span>
+        <span class="word-pill" onclick="fillFromBank('espejismo')">espejismo</span>
+        <span class="word-pill" onclick="fillFromBank('masterpiece')">masterpiece</span>
+        <span class="word-pill" onclick="fillFromBank('na\'')">na'</span>
+        <span class="word-pill" onclick="fillFromBank('perla')">perla</span>
+        <span class="word-pill" onclick="fillFromBank('qué más dará')">qué más dará</span>
+        <span class="word-pill" onclick="fillFromBank('Red flag andante')">Red flag andante</span>
+        <span class="word-pill" onclick="fillFromBank('se fía')">se fía</span>
+        <span class="word-pill" onclick="fillFromBank('sinrazón')">sinrazón</span>
+    </div>
+
+    <!-- Текст песни по карточкам -->
+    <div class="lyrics-grid">
+        <!-- Блок 1 -->
+        <div class="stanza-card">
+            <span class="stanza-label">Estrofa 1</span>
+            Hola, ladrón de paz<br>
+            Campo de minas para mi sensibilidad<br>
+            Playboy, un campeón<br>
+            Gasta el dinero que tiene y también el que no<br>
+            Él es tan encantador, estrella de la
+            <span class="gap-num">(1)</span><input type="text" class="gap-input" id="g1" data-ans="sinrazón"><span class="feedback-mark"></span>
+            <span class="clue-hint">(actitud absurda / falta de lógica)</span><br>
+            Un <span class="gap-num">(2)</span><input type="text" class="gap-input" id="g2" data-ans="espejismo"><span class="feedback-mark"></span>
+            <span class="clue-hint">(ilusión óptica / fraude)</span>, medalla olímpica de oro al más cabrón<br>
+            Tienes el podio de la gran desilusión
+        </div>
+
+        <!-- Припев -->
+        <div class="stanza-card chorus">
+            <span class="stanza-label">Estribillo</span>
+            La decepción local<br>
+            Rompecorazones nacional<br>
+            Un terrorista emocional<br>
+            El mayor desastre mundial<br>
+            Es una <span class="gap-num">(3)</span><input type="text" class="gap-input" id="g3" data-ans="perla"><span class="feedback-mark"></span>,
+            nadie <span class="gap-num">(4)</span><input type="text" class="gap-input" id="g4" data-ans="se fía"><span class="feedback-mark"></span>
+            <span class="clue-hint">(confía en él)</span><br>
+            Es una perla, una de mucho <span class="gap-num">(5)</span><input type="text" class="gap-input" id="g5" data-ans="cuidao|cuida'o|cuidado"><span class="feedback-mark"></span>
+            <span class="clue-hint">(cuidado, en fonética coloquial)</span>
+        </div>
+
+        <!-- Блок 2 -->
+        <div class="stanza-card">
+            <span class="stanza-label">Estrofa 2</span>
+            El rey de la <span class="gap-num">(6)</span><input type="text" class="gap-input" id="g6" data-ans="13-14|13 14|trece-catorce|trece catorce"><span class="feedback-mark"></span>
+            <span class="clue-hint">(trampa / truco sucio)</span><br>
+            No sabe lo que es <span class="gap-num">(7)</span><input type="text" class="gap-input" id="g7" data-ans="cotizar"><span class="feedback-mark"></span>
+            <span class="clue-hint">(pagar cuotas a la Seguridad Social)</span><br>
+            Él es el centro del mundo<br>
+            Y ya después ¿lo demás <span class="gap-num">(8)</span><input type="text" class="gap-input" id="g8" data-ans="qué más dará"><span class="feedback-mark"></span>?
+            <span class="clue-hint">(¿qué importa? / da igual)</span>
+        </div>
+
+        <!-- Блок 3 -->
+        <div class="stanza-card">
+            <span class="stanza-label">Estrofa 3</span>
+            Por fin vas a terapia, vas al psicólogo y también psiquiatra<br>
+            Pero de qué te sirve si siempre mientes más que hablas<br>
+            Te harán un monumento a la deshonestidad<br>
+            No me <span class="gap-num">(9)</span><input type="text" class="gap-input" id="g9" data-ans="das pena"><span class="feedback-mark"></span>
+            <span class="clue-hint">(inspiras lástima ni compasión)</span><br>
+            Quien queda contigo se <span class="gap-num">(10)</span><input type="text" class="gap-input" id="g10" data-ans="drena"><span class="feedback-mark"></span>
+            <span class="clue-hint">(se agota emocionalmente)</span>
+        </div>
+
+        <!-- Блок 4 -->
+        <div class="stanza-card">
+            <span class="stanza-label">Estrofa 4</span>
+            Siempre se autoinvita<br>
+            Si puede vive en casa ajena<br>
+            <span class="gap-num">(11)</span><input type="text" class="gap-input" id="g11" data-ans="red flag andante"><span class="feedback-mark"></span>
+            <span class="clue-hint">(señal de alerta con patas)</span>, tremendo desastre<br>
+            Dirá que no fue él, que fue su <span class="gap-num">(12)</span><input type="text" class="gap-input" id="g12" data-ans="doppelgänger|doppelganger"><span class="feedback-mark"></span>
+            <span class="clue-hint">(su doble / gemelo malvado)</span><br>
+            Nunca le prestes <span class="gap-num">(13)</span><input type="text" class="gap-input" id="g13" data-ans="na'|na|ná|nada"><span class="feedback-mark"></span>
+            <span class="clue-hint">(nada, en habla espontánea)</span>, no lo devolverá<br>
+            Ser <span class="gap-num">(14)</span><input type="text" class="gap-input" id="g14" data-ans="bala perdida|una bala perdida"><span class="feedback-mark"></span>
+            <span class="clue-hint">(un irresponsable sin rumbo)</span> es su especialidad
+        </div>
+
+        <!-- Блок 5 -->
+        <div class="stanza-card">
+            <span class="stanza-label">Estrofa 5 y Cierre</span>
+            La lealtad y la fidelidad<br>
+            Es un idioma que nunca entenderá<br>
+            Su <span class="gap-num">(15)</span><input type="text" class="gap-input" id="g15" data-ans="masterpiece"><span class="feedback-mark"></span>
+            <span class="clue-hint">(obra maestra)</span>, su colección de <span class="gap-num">(16)</span><input type="text" class="gap-input" id="g16" data-ans="bras"><span class="feedback-mark"></span>
+            <span class="clue-hint">(sujetadores)</span><br>
+            Si le pides ayuda desaparecerá<br>
+            <span class="clue-hint">(Estribillo)</span>
+        </div>
+    </div>
+
+    <!-- Блок с ключами -->
+    <div class="keys-box" id="keys-box">
+        <strong>🔑 Respuestas (Comprueba tus aciertos):</strong><br>
+        1. sinrazón &nbsp;|&nbsp; 2. espejismo &nbsp;|&nbsp; 3. perla &nbsp;|&nbsp; 4. se fía &nbsp;|&nbsp; 5. cuidao &nbsp;|&nbsp; 6. 13-14 (trece-catorce) &nbsp;|&nbsp; 7. cotizar &nbsp;|&nbsp; 8. qué más dará &nbsp;|&nbsp; 9. das pena &nbsp;|&nbsp; 10. drena &nbsp;|&nbsp; 11. Red flag andante &nbsp;|&nbsp; 12. doppelgänger &nbsp;|&nbsp; 13. na' &nbsp;|&nbsp; 14. bala perdida &nbsp;|&nbsp; 15. masterpiece &nbsp;|&nbsp; 16. bras
+    </div>
+
+    <!-- Нижняя панель -->
+    <div class="footer-bar">
+        <div class="btn-group">
+            <button type="button" class="action-btn" onclick="checkAll()">✓ Comprobar respuestas</button>
+            <button type="button" class="action-btn secondary" onclick="toggleKeys()">🔑 Respuestas</button>
+            <button type="button" class="action-btn secondary" onclick="resetAll()">↺ Reiniciar</button>
+        </div>
+        <div class="score-summary" id="score-summary">Aciertos: 0 / 16</div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = "la_perla_rosalia_progress_v1";
+    const THEME_KEY = "la_perla_rosalia_theme";
+    let activeInput = null;
+
+    // Инициализация темы (учитывает системную тему + выбор пользователя)
+    function initTheme() {
+        try {
+            const savedTheme = localStorage.getItem(THEME_KEY);
+            if (savedTheme === "dark" || savedTheme === "light") {
+                document.documentElement.setAttribute("data-theme", savedTheme);
+            }
+        } catch (e) {}
+    }
+
+    function toggleTheme() {
+        const root = document.documentElement;
+        const currentAttr = root.getAttribute("data-theme");
+        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        let nextTheme;
+        if (!currentAttr) {
+            nextTheme = systemDark ? "light" : "dark";
+        } else {
+            nextTheme = currentAttr === "dark" ? "light" : "dark";
+        }
+
+        root.setAttribute("data-theme", nextTheme);
+        try {
+            localStorage.setItem(THEME_KEY, nextTheme);
+        } catch (e) {}
+    }
+
+    // Привязка событий к полям ввода
+    document.querySelectorAll('.gap-input').forEach(inp => {
+        inp.addEventListener('focus', () => {
+            activeInput = inp;
+        });
+        inp.addEventListener('input', () => {
+            saveProgress();
+            updateProgressCounter();
+        });
+        inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                checkSingleInput(inp);
+                updateScoreCounter();
+            }
+        });
+    });
+
+    function insertChar(e, char) {
+        e.preventDefault();
+        if (!activeInput) return;
+        const start = activeInput.selectionStart;
+        const end = activeInput.selectionEnd;
+        const val = activeInput.value;
+        activeInput.value = val.substring(0, start) + char + val.substring(end);
+        activeInput.selectionStart = activeInput.selectionEnd = start + char.length;
+        activeInput.focus();
+        saveProgress();
+        updateProgressCounter();
+    }
+
+    function fillFromBank(word) {
+        if (!activeInput) {
+            const emptyInput = Array.from(document.querySelectorAll('.gap-input')).find(i => !i.value.trim());
+            if (emptyInput) activeInput = emptyInput;
+        }
+        if (activeInput) {
+            activeInput.value = word;
+            activeInput.focus();
+            saveProgress();
+            updateProgressCounter();
+        }
+    }
+
+    function toggleWordBank() {
+        document.getElementById('word-bank').classList.toggle('show');
+    }
+
+    function toggleKeys() {
+        document.getElementById('keys-box').classList.toggle('show');
+    }
+
+    function normalizeExact(str) {
+        return (str || "")
+            .toLowerCase()
+            .trim()
+            .replace(/[’‘`]/g, "'")
+            .replace(/[¿?¡!.,]/g, "")
+            .replace(/\s+/g, " ");
+    }
+
+    function removeDiacritics(str) {
+        return normalizeExact(str).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function checkSingleInput(input) {
+        const rawAns = input.getAttribute('data-ans') || "";
+        const validExact = rawAns.split('|').map(normalizeExact);
+        const validPlain = rawAns.split('|').map(removeDiacritics);
+
+        const userExact = normalizeExact(input.value);
+        const userPlain = removeDiacritics(input.value);
+        const mark = input.nextElementSibling;
+
+        input.classList.remove('is-correct', 'is-wrong');
+
+        if (!userExact) {
+            if (mark) {
+                mark.textContent = "!";
+                mark.className = "feedback-mark err";
+                mark.title = "Campo vacío";
+            }
+            input.classList.add('is-wrong');
+            return false;
+        }
+
+        if (validExact.includes(userExact)) {
+            if (mark) {
+                mark.textContent = "✓";
+                mark.className = "feedback-mark ok";
+                mark.title = "¡Correcto!";
+            }
+            input.classList.add('is-correct');
+            return true;
+        } else if (validPlain.includes(userPlain)) {
+            if (mark) {
+                mark.textContent = "✓ (¡tilde!)";
+                mark.className = "feedback-mark warn";
+                mark.title = "¡Bien! Solo revisa la tilde o diéresis";
+            }
+            input.classList.add('is-correct');
+            return true;
+        } else {
+            if (mark) {
+                mark.textContent = "✗";
+                mark.className = "feedback-mark err";
+                mark.title = "Respuesta incorrecta";
+            }
+            input.classList.add('is-wrong');
+            return false;
+        }
+    }
+
+    function checkAll() {
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            checkSingleInput(inp);
+        });
+        updateScoreCounter();
+    }
+
+    function updateProgressCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let filled = 0;
+        allInputs.forEach(inp => {
+            if (normalizeExact(inp.value) !== "") filled++;
+        });
+        document.getElementById('progress-pill').textContent = `Completados: ${filled} / ${allInputs.length}`;
+    }
+
+    function updateScoreCounter() {
+        const allInputs = document.querySelectorAll('.gap-input');
+        let correct = 0;
+        allInputs.forEach(inp => {
+            const rawAns = inp.getAttribute('data-ans') || "";
+            const validPlain = rawAns.split('|').map(removeDiacritics);
+            const userPlain = removeDiacritics(inp.value);
+            if (userPlain !== "" && validPlain.includes(userPlain)) {
+                correct++;
+            }
+        });
+        document.getElementById('score-summary').textContent = `Aciertos: ${correct} / ${allInputs.length}`;
+    }
+
+    function saveProgress() {
+        const data = {};
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            data[inp.id] = inp.value;
+        });
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {}
+    }
+
+    function loadProgress() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.querySelectorAll('.gap-input').forEach(inp => {
+                    if (data[inp.id] !== undefined) {
+                        inp.value = data[inp.id];
+                    }
+                });
+            }
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    function resetAll() {
+        document.querySelectorAll('.gap-input').forEach(inp => {
+            inp.value = "";
+            inp.classList.remove('is-correct', 'is-wrong');
+            const mark = inp.nextElementSibling;
+            if (mark) mark.textContent = "";
+        });
+        document.getElementById('keys-box').classList.remove('show');
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+        } catch (e) {}
+        updateProgressCounter();
+        updateScoreCounter();
+    }
+
+    initTheme();
+    loadProgress();
+</script>
+
+</body>
+</html>
